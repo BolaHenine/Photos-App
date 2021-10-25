@@ -1,10 +1,37 @@
 package app;
 
-public class mainDriver {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class mainDriver extends Application {
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/view/loginPage.fxml"));
+		Scene root = (Scene) loader.load();
+		primaryStage.setScene(root);
+		primaryStage.setTitle("asd");
+		primaryStage.setResizable(false);
+		primaryStage.show();
+
+		// FXMLLoader loader = new FXMLLoader();
+		// loader.setLocation(getClass().getResource("/view/adminView.fxml"));
+		// AnchorPane root = (AnchorPane) loader.load();
+		// adminController adminController = loader.getController();
+		// adminController.start();
+		// Scene scene = new Scene(root);
+		// primaryStage.setScene(scene);
+		// primaryStage.setResizable(false);
+		// primaryStage.show();
+	}
 
 	public static void main(String[] args) {
-		System.out.println("First Commit");
-		System.out.println("Second Commit");
+		// TODO Auto-generated method stub
+		launch(args);
+
 	}
 
 }
