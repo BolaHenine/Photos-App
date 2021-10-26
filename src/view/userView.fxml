@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.userController">
+   <children>
+      <Label fx:id="userNameLabel" alignment="CENTER" layoutX="250.0" layoutY="14.0" prefHeight="36.0" prefWidth="100.0" text="Username">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="logout" layoutX="486.0" layoutY="20.0" mnemonicParsing="false" text="Logout" onAction="#buttonClick" />
+      <Button fx:id="close" layoutX="547.0" layoutY="20.0" mnemonicParsing="false" text="X" textFill="RED" onAction="#buttonClick" />
+      <Label layoutX="36.0" layoutY="63.0" prefHeight="36.0" prefWidth="68.0" text="Albums:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <ListView fx:id="albumList" layoutX="36.0" layoutY="106.0" prefHeight="189.0" prefWidth="544.0" />
+      <Button fx:id="editAlbum" layoutX="438.0" layoutY="306.0" mnemonicParsing="false" text="Edit Album Name" onAction="#buttonClick" />
+      <Button fx:id="openAlbum" layoutX="42.0" layoutY="344.0" mnemonicParsing="false" text="Open Album" onAction="#buttonClick" />
+      <Button fx:id="Search" layoutX="272.0" layoutY="51.0" mnemonicParsing="false" text="Search" onAction="#buttonClick" />
+      <Button fx:id="deleteAlbum" layoutX="449.0" layoutY="344.0" mnemonicParsing="false" text="Delete Album" onAction="#buttonClick" />
+      <Button fx:id="addAlbum" layoutX="42.0" layoutY="306.0" mnemonicParsing="false" text="Add Album" onAction="#buttonClick" />
+      <TextField fx:id="albumName" layoutX="220.0" layoutY="331.0" promptText="Album Name:" />
+   </children>
+</AnchorPane>

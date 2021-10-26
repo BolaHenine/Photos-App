@@ -28,6 +28,14 @@ public class User implements java.io.Serializable {
 		albums = new ArrayList<Album>();
 	}
 
+	public void addAlbum(Album newAlbum) {
+		albums.add(newAlbum);
+	}
+
+	public ArrayList<Album> getAlbums() {
+		return albums;
+	}
+
 	public static void writeApp(ObservableList<User> users) throws IOException {
 		ObjectOutputStream oos = new ObjectOutputStream(
 				new FileOutputStream(storeDir + File.separator + storeFile));

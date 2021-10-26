@@ -39,6 +39,7 @@ public class adminController {
 	public void start() throws ClassNotFoundException, IOException {
 
 		users = User.readApp();
+
 		usersList.setItems(users);
 		usersList.setCellFactory(lv -> new ListCell<User>() {
 			@Override
@@ -57,10 +58,12 @@ public class adminController {
 
 	public void buttonClick(ActionEvent e)
 			throws IOException, ClassNotFoundException {
+
 		FXMLLoader loader = new FXMLLoader(
 				getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
 		Button b = (Button) e.getSource();
 
 		int index = usersList.getSelectionModel().getSelectedIndex();
