@@ -46,15 +46,13 @@ public class userController {
 
 	private ObservableList<User> usersList;
 
-	public void start(int loggedUserIndex, String userName)
-			throws ClassNotFoundException, IOException {
+	public void start(int loggedUserIndex, String userName) throws ClassNotFoundException, IOException {
 
 		selectedUserIndex = loggedUserIndex;
 
 		usersList = User.readApp();
 
-		albums = FXCollections
-				.observableList(usersList.get(loggedUserIndex).getAlbums());
+		albums = FXCollections.observableList(usersList.get(loggedUserIndex).getAlbums());
 
 		albumList.setItems(albums);
 
@@ -71,8 +69,7 @@ public class userController {
 			}
 		});
 
-		albumList.getSelectionModel().selectedIndexProperty()
-				.addListener((obs) -> showItemInputDialog());
+		albumList.getSelectionModel().selectedIndexProperty().addListener((obs) -> showItemInputDialog());
 
 		userNameLabel.setText(userName);
 	}
@@ -90,14 +87,12 @@ public class userController {
 
 	}
 
-	public void buttonClick(ActionEvent e)
-			throws IOException, ClassNotFoundException {
+	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
 
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getResource("/view/loginPage.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
+		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-
 		Button b = (Button) e.getSource();
 
 		int index = albumList.getSelectionModel().getSelectedIndex();
@@ -116,8 +111,7 @@ public class userController {
 			albumName.setText("");
 			User.writeApp(usersList);
 
-			albums = FXCollections.observableList(
-					usersList.get(selectedUserIndex).getAlbums());
+			albums = FXCollections.observableList(usersList.get(selectedUserIndex).getAlbums());
 			albumList.setItems(albums);
 
 		}
@@ -135,11 +129,9 @@ public class userController {
 			albumName.setText("");
 		} else if (b == editAlbum) {
 
-			usersList.get(selectedUserIndex).getAlbums().get(index)
-					.setName(albumName.getText());
+			usersList.get(selectedUserIndex).getAlbums().get(index).setName(albumName.getText());
 
-			albums = FXCollections.observableList(
-					usersList.get(selectedUserIndex).getAlbums());
+			albums = FXCollections.observableList(usersList.get(selectedUserIndex).getAlbums());
 			albumList.setItems(albums);
 
 			albumName.setText("");

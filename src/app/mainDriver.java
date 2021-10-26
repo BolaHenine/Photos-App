@@ -12,6 +12,7 @@ public class mainDriver extends Application {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
+		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		primaryStage.setScene(root);
 		primaryStage.setTitle("asd");
 		primaryStage.setResizable(false);
