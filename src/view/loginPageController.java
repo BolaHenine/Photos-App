@@ -42,7 +42,6 @@ public class loginPageController {
 		parent = (Parent) loader.load();
 		adminController adminController = loader.getController();
 		adminController.start();
-
 		Scene scene = new Scene(parent);
 		scene.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();

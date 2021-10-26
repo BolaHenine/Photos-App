@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -39,6 +40,10 @@ public class userController {
 	Label userNameLabel;
 	@FXML
 	ListView<Album> albumList;
+
+	FXMLLoader albumLoader;
+
+	Parent albumParent;
 
 	private ObservableList<Album> albums;
 
@@ -93,6 +98,13 @@ public class userController {
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
+		albumLoader = new FXMLLoader(
+				getClass().getResource("/view/albumView.fxml"));
+		albumParent = (Parent) albumLoader.load();
+		Scene albumScene = new Scene(albumParent);
+		albumController albumController = albumLoader.getController();
+
 		Button b = (Button) e.getSource();
 
 		int index = albumList.getSelectionModel().getSelectedIndex();
@@ -120,7 +132,8 @@ public class userController {
 			stage.setScene(root);
 		}
 		if (b == openAlbum) {
-			System.out.println("Open Album");
+			albumController.start(selectedUserIndex, index);
+			stage.setScene(albumScene);
 		}
 		if (b == deleteAlbum) {
 			usersList.get(selectedUserIndex).getAlbums().remove(index);
