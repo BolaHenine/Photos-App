@@ -43,7 +43,6 @@ public class loginPageController {
 		parent = (Parent) loader.load();
 		adminController adminController = loader.getController();
 		adminController.start();
-
 		Scene scene = new Scene(parent);
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 

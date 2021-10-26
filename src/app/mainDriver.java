@@ -38,6 +38,20 @@ public class mainDriver extends Application {
 		// primaryStage.setScene(scene);
 		// primaryStage.setResizable(false);
 		// primaryStage.show();
+
+		// FXMLLoader loader = new FXMLLoader();
+		// loader.setLocation(getClass().getResource("/view/albumView.fxml"));
+		// AnchorPane root = (AnchorPane) loader.load();
+		//
+		// albumController albumController = loader.getController();
+		//
+		// // albumController.start();
+		//
+		// Scene scene = new Scene(root);
+		// primaryStage.setScene(scene);
+		// primaryStage.setResizable(false);
+		// primaryStage.show();
+
 	}
 
 	public static void main(String[] args) {
