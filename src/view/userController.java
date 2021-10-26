@@ -99,10 +99,10 @@ public class userController {
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-		albumLoader = new FXMLLoader(
-				getClass().getResource("/view/albumView.fxml"));
+		albumLoader = new FXMLLoader(getClass().getResource("/view/albumView.fxml"));
 		albumParent = (Parent) albumLoader.load();
 		Scene albumScene = new Scene(albumParent);
+		albumScene.getRoot().setStyle("-fx-font-family: 'serif'");
 		albumController albumController = albumLoader.getController();
 
 		Button b = (Button) e.getSource();

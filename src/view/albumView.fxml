@@ -8,18 +8,18 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="478.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.albumController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="478.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.albumController">
    <children>
       <Label fx:id="albumName" alignment="CENTER" layoutX="233.0" layoutY="15.0" prefHeight="36.0" prefWidth="134.0" text="Album Name">
          <font>
-            <Font size="20.0" />
+            <Font name="Arial" size="20.0" />
          </font>
       </Label>
       <Button fx:id="logout" layoutX="484.0" layoutY="20.0" mnemonicParsing="false" text="Logout" onAction="#buttonClick" />
       <Button fx:id="close" layoutX="545.0" layoutY="20.0" mnemonicParsing="false" text="X" textFill="RED" onAction="#buttonClick" />
       <Label layoutX="37.0" layoutY="50.0" prefHeight="36.0" prefWidth="68.0" text="Photos:">
          <font>
-            <Font size="15.0" />
+            <Font name="Arial" size="15.0" />
          </font>
       </Label>
       <ListView fx:id="imageList" layoutX="28.0" layoutY="86.0" prefHeight="189.0" prefWidth="544.0" />
