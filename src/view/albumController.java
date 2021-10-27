@@ -70,7 +70,7 @@ public class albumController {
 
 		albumName.setText(users.get(userNumber).getAlbums().get(albumNumber).getName());
 
-		photoFile = new File("/Users/bolahenine/Desktop/image.jpeg");
+		photoFile = new File("/Users/roshanseth/Desktop/wallpaper.jpeg");
 		Image image = new Image(photoFile.toURI().toString(), 50, 50, false, false);
 
 		String[] arr = { "tree" };
@@ -123,7 +123,7 @@ public class albumController {
 			stage.close();
 		}
 		if (b == openPhoto) {
-			
+
 			stage.setScene(photoScene);
 		}
 		if (b == addPhoto) {

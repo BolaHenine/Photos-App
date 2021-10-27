@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -57,29 +56,28 @@ public class photoController {
 
 	private String[] photoNam;
 
-	public void start(int userNumber, int albumNumber) throws ClassNotFoundException, IOException {
+	public void start(int userNumber, int photoNumber) throws ClassNotFoundException, IOException {
 
 		userIndex = userNumber;
 
 		users = User.readApp();
 
-		photoName.setText(users.get(userNumber).getAlbums().get(albumNumber).getName());
+		photoFile = new File("/Users/roshanseth/Desktop/wallpaper.jpeg");
+		Image image = new Image(photoFile.toURI().toString(), 50, 50, true, false);
 
-		photoFile = new File("/Users/bolahenine/Desktop/image.jpeg");
-		Image image = new Image(photoFile.toURI().toString(), 50, 50, false, false);
+//		String[] arr = { "tree" };
+//
+//		photoNam = arr;
+//
+//		photoNames = FXCollections.observableArrayList(photoNam);
 
-		String[] arr = { "tree" };
+		photoView.setImage(image);
 
-		photoNam = arr;
+//		images.add(image);
 
-		photoNames = FXCollections.observableArrayList(photoNam);
+	}
 
-		photoFile = new File("/Users/bolahenine/Desktop/pic.jpeg");
-		Image image2 = new Image(photoFile.toURI().toString(), 50, 50, false, false);
-
-		photoView.setImage(image2);
-
-		images.add(image);
+	private void showItemInputDialog() {
 
 	}
 
