@@ -73,6 +73,8 @@ public class albumController {
 
 		userIndex = userNumber;
 
+		albumIndex = albumNumber;
+
 		users = User.readApp();
 
 		selectedAlbum = users.get(userNumber).getAlbums().get(albumNumber);
@@ -80,25 +82,7 @@ public class albumController {
 		albumName.setText(
 				users.get(userNumber).getAlbums().get(albumNumber).getName());
 
-		photoFile = new File(
-				"/Users/bolahenine/Desktop/cs213/photos17/src/view/image.jpeg");
-		Image image = new Image(photoFile.toURI().toString(), 50, 50, false,
-				false);
-
-		photoFile = new File(
-				"/Users/bolahenine/Desktop/cs213/photos17/src/view/pic.jpeg");
-		Image image2 = new Image(photoFile.toURI().toString(), 50, 50, false,
-				false);
-
-		Photo test = new Photo("image 1", image);
-		Photo test2 = new Photo("image 2", image2);
-
-		selectedAlbum.addPhoto(test);
-		selectedAlbum.addPhoto(test2);
-
 		images = selectedAlbum.getPhotos();
-
-		System.out.println(images.size());
 
 		imageList.setItems(
 				FXCollections.observableArrayList(selectedAlbum.getPhotos()));
@@ -129,8 +113,6 @@ public class albumController {
 
 				});
 
-		// imageList.setItems(FXCollections.observableArrayList(images));
-
 	}
 
 	public void buttonClick(ActionEvent e)
@@ -159,7 +141,6 @@ public class albumController {
 			stage.close();
 		}
 		if (b == openPhoto) {
-
 			stage.setScene(photoScene);
 		}
 		if (b == addPhoto) {
@@ -174,22 +155,22 @@ public class albumController {
 					new ExtensionFilter("JPEG Files", "*.jpg", "*.JPG"),
 					new ExtensionFilter("PNG Files", "*.png", "*.PNG"));
 			File selectedFile = chooser.showOpenDialog(stage);
-
-			// photoFile = new File(
-			// "/Users/bolahenine/Desktop/cs213/photos17/src/view/167408.jpeg");
-			Image image = new Image(selectedFile.toURI().toString(), 50, 50,
-					false, false);
-			Photo newPhoto = new Photo(selectedFile.getName(), image);
-			//
-			selectedAlbum.addPhoto(newPhoto);
-
-			imageList.setItems(FXCollections
-					.observableArrayList(selectedAlbum.getPhotos()));
+			if (selectedFile != null) {
+				Image image = new Image(selectedFile.toURI().toString(), 50, 50,
+						false, false);
+				Photo newPhoto = new Photo(selectedFile.getName(), image);
+				selectedAlbum.addPhoto(newPhoto);
+				User.writeApp(users);
+				imageList.setItems(FXCollections
+						.observableArrayList(selectedAlbum.getPhotos()));
+			}
 
 		}
 
 		if (b == deletePhoto) {
 			imageList.getItems().remove(index);
+			images.remove(index);
+			User.writeApp(users);
 		}
 
 	}

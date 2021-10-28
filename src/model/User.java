@@ -20,6 +20,10 @@ public class User implements java.io.Serializable {
 	public static final String storeDir = "data";
 	public static final String storeFile = "data.dat";
 
+	public static ObjectInputStream ois;
+
+	public static ObjectOutputStream oos;
+
 	public String getName() {
 		return userName;
 	}
@@ -37,7 +41,7 @@ public class User implements java.io.Serializable {
 	}
 
 	public static void writeApp(ObservableList<User> users) throws IOException {
-		ObjectOutputStream oos = new ObjectOutputStream(
+		oos = new ObjectOutputStream(
 				new FileOutputStream(storeDir + File.separator + storeFile));
 		oos.writeObject(new ArrayList<User>(users));
 		oos.close();
@@ -45,9 +49,10 @@ public class User implements java.io.Serializable {
 
 	public static ObservableList<User> readApp()
 			throws IOException, ClassNotFoundException {
-		ObjectInputStream ois = new ObjectInputStream(
+		ois = new ObjectInputStream(
 				new FileInputStream(storeDir + File.separator + storeFile));
 		List<User> list = (List<User>) ois.readObject();
 		return FXCollections.observableList(list);
 	}
+
 }

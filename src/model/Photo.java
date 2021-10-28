@@ -10,11 +10,14 @@ public class Photo implements java.io.Serializable {
 	private String name;
 	private String caption;
 	private Calendar date;
-	private Image photo;
+	private SerializableImage photo;
+
+	public static final String storeDir = "data";
+	public static final String storeFile = "datas.dat";
 
 	public Photo(String photoName, Image image) {
 		name = photoName;
-		photo = image;
+		photo = new SerializableImage(image);
 		// date = createdDate;
 	}
 
@@ -27,7 +30,7 @@ public class Photo implements java.io.Serializable {
 	}
 
 	public Image getImage() {
-		return photo;
+		return photo.getImage();
 	}
 
 	public Calendar getDate() {
