@@ -15,10 +15,12 @@ public class Photo implements java.io.Serializable {
 	public static final String storeDir = "data";
 	public static final String storeFile = "datas.dat";
 
-	public Photo(String photoName, Image image, Calendar createdDate) {
+	public Photo(String photoName, Image image, Calendar createdDate,
+			String captionName) {
 		name = photoName;
 		photo = new SerializableImage(image);
 		date = createdDate;
+		caption = captionName;
 	}
 
 	public String getName() {

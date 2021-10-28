@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -48,8 +49,11 @@ public class albumController {
 	Button move;
 	@FXML
 	Label albumName;
-	// @FXML
-	// ListView<String> imageList;
+
+	@FXML
+	TextField captionName;
+	@FXML
+	TextField photoName;
 
 	@FXML
 	ListView<Photo> imageList;
@@ -164,7 +168,7 @@ public class albumController {
 				Image image = new Image(selectedFile.toURI().toString(), 50, 50,
 						false, false);
 				Photo newPhoto = new Photo(selectedFile.getName(), image,
-						calendar);
+						calendar, captionName.getText());
 				selectedAlbum.addPhoto(newPhoto);
 				User.writeApp(users);
 				imageList.setItems(FXCollections
