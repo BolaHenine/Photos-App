@@ -7,25 +7,12 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
-/**
- * Needed to serialize an image, since the java Image class is not inherently
- * serializable
- *
- * @author Anil Tilve
- * @author Ayush Joshi
- */
 public class SerializableImage implements Serializable {
 
 	private static final long serialVersionUID = -1266447099158556616L;
 	private int width, height;
 	private int[][] pixels;
 
-	/**
-	 * Converts an Image object to a serializable representation
-	 *
-	 * @param image
-	 *            the image to be converted
-	 */
 	public SerializableImage(Image image) {
 		width = (int) image.getWidth();
 		height = (int) image.getHeight();
@@ -38,11 +25,6 @@ public class SerializableImage implements Serializable {
 						.getArgb(currentWidth, currentHeight);
 	}
 
-	/**
-	 * Converts the serialized representation back to an Image
-	 *
-	 * @return Image object
-	 */
 	public Image getImage() {
 		WritableImage image = new WritableImage(width, height);
 
@@ -54,40 +36,18 @@ public class SerializableImage implements Serializable {
 		return image;
 	}
 
-	/**
-	 * Gets the width of this image
-	 *
-	 * @return the width of this image
-	 */
 	public int getWidth() {
 		return width;
 	}
 
-	/**
-	 * Gets the height of this image
-	 *
-	 * @return the height of this image
-	 */
 	public int getHeight() {
 		return height;
 	}
 
-	/**
-	 * 2D Pixels array accessor
-	 *
-	 * @return a 2D int array representing the color values
-	 */
 	public int[][] getPixels() {
 		return pixels;
 	}
 
-	/**
-	 * check if two images are equal
-	 *
-	 * @param image
-	 *            The serializable image to be compared to
-	 * @return true if they're equal, else false
-	 */
 	public boolean equals(SerializableImage image) {
 		if (width != image.getWidth() || height != image.getHeight())
 			return false;
