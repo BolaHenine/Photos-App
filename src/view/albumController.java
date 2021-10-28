@@ -71,8 +71,7 @@ public class albumController {
 
 	private Calendar calendar;
 
-	public void start(int userNumber, int albumNumber)
-			throws ClassNotFoundException, IOException {
+	public void start(int userNumber, int albumNumber) throws ClassNotFoundException, IOException {
 
 		userIndex = userNumber;
 
@@ -82,52 +81,44 @@ public class albumController {
 
 		selectedAlbum = users.get(userNumber).getAlbums().get(albumNumber);
 
-		albumName.setText(
-				users.get(userNumber).getAlbums().get(albumNumber).getName());
+		albumName.setText(users.get(userNumber).getAlbums().get(albumNumber).getName());
 
 		images = selectedAlbum.getPhotos();
 
-		imageList.setItems(
-				FXCollections.observableArrayList(selectedAlbum.getPhotos()));
+		imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
 
-		imageList.setCellFactory(
-				new Callback<ListView<Photo>, ListCell<Photo>>() {
+		imageList.setCellFactory(new Callback<ListView<Photo>, ListCell<Photo>>() {
+			@Override
+			public ListCell<Photo> call(ListView<Photo> arg0) {
+				ListCell<Photo> cell = new ListCell<Photo>() {
 					@Override
-					public ListCell<Photo> call(ListView<Photo> arg0) {
-						ListCell<Photo> cell = new ListCell<Photo>() {
-							@Override
-							protected void updateItem(Photo photo,
-									boolean bt1) {
-								super.updateItem(photo, bt1);
-								if (photo != null) {
-									Image img = images.get(getIndex())
-											.getImage();
-									ImageView imgview = new ImageView(img);
-									setGraphic(imgview);
-									setText(images.get(getIndex()).getName());
-								} else {
-									setGraphic(null);
-									setText("");
-								}
-							}
-						};
-						return cell;
-					};
+					protected void updateItem(Photo photo, boolean bt1) {
+						super.updateItem(photo, bt1);
+						if (photo != null) {
+							Image img = images.get(getIndex()).getImage();
+							ImageView imgview = new ImageView(img);
+							setGraphic(imgview);
+							setText(images.get(getIndex()).getName());
+						} else {
+							setGraphic(null);
+							setText("");
+						}
+					}
+				};
+				return cell;
+			};
 
-				});
+		});
 
 	}
 
-	public void buttonClick(ActionEvent e)
-			throws IOException, ClassNotFoundException {
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getResource("/view/loginPage.fxml"));
+	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-		photoLoader = new FXMLLoader(
-				getClass().getResource("/view/photoView.fxml"));
+		photoLoader = new FXMLLoader(getClass().getResource("/view/photoView.fxml"));
 		photoParent = (Parent) photoLoader.load();
 		Scene photoScene = new Scene(photoParent);
 		photoScene.getRoot().setStyle("-fx-font-family: 'serif'");
@@ -144,6 +135,7 @@ public class albumController {
 			stage.close();
 		}
 		if (b == openPhoto) {
+			photoController.start(userIndex, albumIndex, index);
 			stage.setScene(photoScene);
 		}
 		if (b == addPhoto) {
@@ -151,24 +143,19 @@ public class albumController {
 			System.out.println(calendar.getTime());
 			FileChooser chooser = new FileChooser();
 			chooser.setTitle("Choose Image");
-			chooser.getExtensionFilters().addAll(
-					new ExtensionFilter("Image Files", "*.bmp", "*.BMP",
-							"*.gif", "*.GIF", "*.jpg", "*.JPG", "*.png",
-							"*.PNG"),
-					new ExtensionFilter("Bitmap Files", "*.bmp", "*.BMP"),
-					new ExtensionFilter("GIF Files", "*.gif", "*.GIF"),
-					new ExtensionFilter("JPEG Files", "*.jpg", "*.JPG"),
-					new ExtensionFilter("PNG Files", "*.png", "*.PNG"));
+			chooser.getExtensionFilters()
+					.addAll(new ExtensionFilter("Image Files", "*.bmp", "*.BMP", "*.gif", "*.GIF", "*.jpg", "*.JPG",
+							"*.png", "*.PNG"), new ExtensionFilter("Bitmap Files", "*.bmp", "*.BMP"),
+							new ExtensionFilter("GIF Files", "*.gif", "*.GIF"),
+							new ExtensionFilter("JPEG Files", "*.jpg", "*.JPG"),
+							new ExtensionFilter("PNG Files", "*.png", "*.PNG"));
 			File selectedFile = chooser.showOpenDialog(stage);
 			if (selectedFile != null) {
-				Image image = new Image(selectedFile.toURI().toString(), 50, 50,
-						false, false);
-				Photo newPhoto = new Photo(selectedFile.getName(), image,
-						calendar);
+				Image image = new Image(selectedFile.toURI().toString(), 50, 50, false, false);
+				Photo newPhoto = new Photo(selectedFile.getName(), image, calendar);
 				selectedAlbum.addPhoto(newPhoto);
 				User.writeApp(users);
-				imageList.setItems(FXCollections
-						.observableArrayList(selectedAlbum.getPhotos()));
+				imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
 			}
 
 		}

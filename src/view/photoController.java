@@ -1,8 +1,6 @@
 package view;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,9 +12,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import model.Photo;
 import model.User;
 
 public class photoController {
@@ -38,43 +37,40 @@ public class photoController {
 	ListView<String> tagList;
 	@FXML
 	ImageView photoView;
+	@FXML
+	TextField photoName1;
+	@FXML
+	TextField captionName;
+	@FXML
+	TextField dateCreated;
 
 	FXMLLoader photoLoader;
 
 	Parent photoParent;
 
 	private ObservableList<User> users;
-
-	private ObservableList<String> photoNames;
-
-	private ArrayList<Image> images = new ArrayList<Image>();
-
+	private Photo photo;
 	private int userIndex;
 	private int photoIndex;
+	private int albumIndex;
 
-	private File photoFile;
-
-	private String[] photoNam;
-
-	public void start(int userNumber, int photoNumber) throws ClassNotFoundException, IOException {
+	public void start(int userNumber, int albumNumber, int photoNumber) throws ClassNotFoundException, IOException {
 
 		userIndex = userNumber;
-
+		photoIndex = photoNumber;
+		albumIndex = albumNumber;
 		users = User.readApp();
+		photoName1.setEditable(false);
+		captionName.setEditable(false);
+		dateCreated.setEditable(false);
 
-		photoFile = new File("/Users/roshanseth/Desktop/wallpaper.jpeg");
-		Image image = new Image(photoFile.toURI().toString(), 50, 50, true, false);
+		photo = users.get(userNumber).getAlbums().get(albumNumber).getPhotos().get(photoNumber);
+		photoName.setText(photo.getName());
+		photoView.setImage(photo.getImage());
 
-//		String[] arr = { "tree" };
-//
-//		photoNam = arr;
-//
-//		photoNames = FXCollections.observableArrayList(photoNam);
-
-		photoView.setImage(image);
-
-//		images.add(image);
-
+		photoName1.setText(photo.getName());
+		captionName.setText(photo.getCaption());
+		dateCreated.setText(photo.getDate().getTime().toString());
 	}
 
 	private void showItemInputDialog() {
