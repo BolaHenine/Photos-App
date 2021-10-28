@@ -24,13 +24,13 @@
       <Label layoutX="54.0" layoutY="330.0" text="Photo Name:" />
       <Label layoutX="48.0" layoutY="363.0" text="Caption Name:" />
       <Label layoutX="48.0" layoutY="392.0" text="Date/time Created:" />
-      <TextField layoutX="153.0" layoutY="359.0" prefHeight="0.0" prefWidth="161.0" text="Caption Name" />
-      <TextField layoutX="153.0" layoutY="388.0" text="Date Created" />
-      <TextField layoutX="153.0" layoutY="326.0" prefHeight="0.0" prefWidth="161.0" text="Photo Name" />
+      <TextField fx:id="captionName" layoutX="153.0" layoutY="359.0" prefHeight="0.0" prefWidth="161.0" text="Caption Name" />
+      <TextField fx:id="dateCreated" layoutX="153.0" layoutY="388.0" text="Date Created" />
+      <TextField fx:id="photoName1" layoutX="153.0" layoutY="326.0" prefHeight="0.0" prefWidth="161.0" text="Photo Name" />
       <Label layoutX="367.0" layoutY="330.0" text="Tag Name:" />
       <Label layoutX="367.0" layoutY="363.0" text="Tag Value:" />
-      <TextField layoutX="430.0" layoutY="326.0" prefHeight="0.0" prefWidth="161.0" promptText="Tag Name" />
-      <TextField layoutX="430.0" layoutY="359.0" prefHeight="0.0" prefWidth="161.0" promptText="Tag Value" />
+      <TextField fx:id="tagName" layoutX="430.0" layoutY="326.0" prefHeight="0.0" prefWidth="161.0" promptText="Tag Name" />
+      <TextField fx:id="tagValue" layoutX="430.0" layoutY="359.0" prefHeight="0.0" prefWidth="161.0" promptText="Tag Value" />
       <Button fx:id="addTag" layoutX="425.0" layoutY="401.0" mnemonicParsing="false" text="Add Tag" onAction="#buttonClick"/>
       <ListView fx:id="tagList" layoutX="151.0" layoutY="444.0" prefHeight="200.0" prefWidth="200.0" />
       <Label layoutX="47.0" layoutY="508.0" prefHeight="36.0" prefWidth="68.0" text="Tags:">

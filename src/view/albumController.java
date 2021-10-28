@@ -17,7 +17,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -49,11 +48,8 @@ public class albumController {
 	Button move;
 	@FXML
 	Label albumName;
-
-	@FXML
-	TextField captionName;
-	@FXML
-	TextField photoName;
+	// @FXML
+	// ListView<String> imageList;
 
 	@FXML
 	ListView<Photo> imageList;
@@ -148,6 +144,7 @@ public class albumController {
 			stage.close();
 		}
 		if (b == openPhoto) {
+			photoController.start(userIndex, albumIndex, index);
 			stage.setScene(photoScene);
 		}
 		if (b == addPhoto) {
@@ -155,24 +152,26 @@ public class albumController {
 			System.out.println(calendar.getTime());
 			FileChooser chooser = new FileChooser();
 			chooser.setTitle("Choose Image");
-			chooser.getExtensionFilters().addAll(
-					new ExtensionFilter("Image Files", "*.bmp", "*.BMP",
-							"*.gif", "*.GIF", "*.jpg", "*.JPG", "*.png",
-							"*.PNG"),
-					new ExtensionFilter("Bitmap Files", "*.bmp", "*.BMP"),
-					new ExtensionFilter("GIF Files", "*.gif", "*.GIF"),
-					new ExtensionFilter("JPEG Files", "*.jpg", "*.JPG"),
-					new ExtensionFilter("PNG Files", "*.png", "*.PNG"));
+			chooser.getExtensionFilters()
+					.addAll(new ExtensionFilter("Image Files", "*.bmp", "*.BMP", "*.gif", "*.GIF", "*.jpg", "*.JPG",
+							"*.png", "*.PNG"), new ExtensionFilter("Bitmap Files", "*.bmp", "*.BMP"),
+							new ExtensionFilter("GIF Files", "*.gif", "*.GIF"),
+							new ExtensionFilter("JPEG Files", "*.jpg", "*.JPG"),
+							new ExtensionFilter("PNG Files", "*.png", "*.PNG"));
 			File selectedFile = chooser.showOpenDialog(stage);
 			if (selectedFile != null) {
 				Image image = new Image(selectedFile.toURI().toString(), 50, 50,
 						false, false);
 				Photo newPhoto = new Photo(selectedFile.getName(), image,
 						calendar, captionName.getText());
+
+				Image image = new Image(selectedFile.toURI().toString(), 50, 50, false, false);
+				Photo newPhoto = new Photo(selectedFile.getName(), image, calendar);
+				Image image = new Image(selectedFile.toURI().toString(), 50, 50, false, false);
+				Photo newPhoto = new Photo(selectedFile.getName(), image, calendar);
 				selectedAlbum.addPhoto(newPhoto);
 				User.writeApp(users);
-				imageList.setItems(FXCollections
-						.observableArrayList(selectedAlbum.getPhotos()));
+				imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
 			}
 
 		}
