@@ -3,6 +3,7 @@ package view;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -67,6 +68,8 @@ public class albumController {
 	private File photoFile;
 
 	private Album selectedAlbum;
+
+	private Calendar calendar;
 
 	public void start(int userNumber, int albumNumber)
 			throws ClassNotFoundException, IOException {
@@ -144,6 +147,8 @@ public class albumController {
 			stage.setScene(photoScene);
 		}
 		if (b == addPhoto) {
+			calendar = Calendar.getInstance();
+			System.out.println(calendar.getTime());
 			FileChooser chooser = new FileChooser();
 			chooser.setTitle("Choose Image");
 			chooser.getExtensionFilters().addAll(
@@ -158,7 +163,8 @@ public class albumController {
 			if (selectedFile != null) {
 				Image image = new Image(selectedFile.toURI().toString(), 50, 50,
 						false, false);
-				Photo newPhoto = new Photo(selectedFile.getName(), image);
+				Photo newPhoto = new Photo(selectedFile.getName(), image,
+						calendar);
 				selectedAlbum.addPhoto(newPhoto);
 				User.writeApp(users);
 				imageList.setItems(FXCollections
