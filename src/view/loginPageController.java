@@ -32,7 +32,8 @@ public class loginPageController {
 
 	private int loggedUserIndex;
 
-	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
+	public void buttonClick(ActionEvent e)
+			throws IOException, ClassNotFoundException {
 
 		boolean userFound = false;
 
@@ -48,7 +49,8 @@ public class loginPageController {
 
 		Button b = (Button) e.getSource();
 
-		userLoader = new FXMLLoader(getClass().getResource("/view/userView.fxml"));
+		userLoader = new FXMLLoader(
+				getClass().getResource("/view/userView.fxml"));
 		userParent = (Parent) userLoader.load();
 		userController userController = userLoader.getController();
 		Scene userScene = new Scene(userParent);
@@ -65,7 +67,8 @@ public class loginPageController {
 				stage.setScene(scene);
 				stage.show();
 			} else if (userFound) {
-				userController.start(loggedUserIndex, users.get(loggedUserIndex).getName());
+				userController.start(loggedUserIndex,
+						users.get(loggedUserIndex).getName());
 				stage.setScene(userScene);
 			} else {
 				System.out.println("User not Found");

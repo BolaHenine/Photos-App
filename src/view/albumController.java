@@ -18,7 +18,12 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import model.Album;
+import model.Photo;
 import model.User;
 
 public class albumController {
@@ -42,8 +47,11 @@ public class albumController {
 	Button move;
 	@FXML
 	Label albumName;
+	// @FXML
+	// ListView<String> imageList;
+
 	@FXML
-	ListView<String> imageList;
+	ListView<Photo> imageList;
 
 	FXMLLoader photoLoader;
 
@@ -51,71 +59,99 @@ public class albumController {
 
 	private ObservableList<User> users;
 
-	private ObservableList<String> imageNames;
-
-	private ArrayList<Image> images = new ArrayList<Image>();
+	private ArrayList<Photo> images = new ArrayList<Photo>();
 
 	private int userIndex;
 	private int albumIndex;
 
 	private File photoFile;
 
-	private String[] imageNam;
+	private Album selectedAlbum;
 
-	public void start(int userNumber, int albumNumber) throws ClassNotFoundException, IOException {
+	public void start(int userNumber, int albumNumber)
+			throws ClassNotFoundException, IOException {
 
 		userIndex = userNumber;
 
 		users = User.readApp();
 
-		albumName.setText(users.get(userNumber).getAlbums().get(albumNumber).getName());
+		selectedAlbum = users.get(userNumber).getAlbums().get(albumNumber);
 
-		photoFile = new File("/Users/roshanseth/Desktop/wallpaper.jpeg");
-		Image image = new Image(photoFile.toURI().toString(), 50, 50, false, false);
+		albumName.setText(
+				users.get(userNumber).getAlbums().get(albumNumber).getName());
 
-		String[] arr = { "tree" };
+		photoFile = new File(
+				"/Users/bolahenine/Desktop/cs213/photos17/src/view/image.jpeg");
+		Image image = new Image(photoFile.toURI().toString(), 50, 50, false,
+				false);
 
-		imageNam = arr;
+		photoFile = new File(
+				"/Users/bolahenine/Desktop/cs213/photos17/src/view/pic.jpeg");
+		Image image2 = new Image(photoFile.toURI().toString(), 50, 50, false,
+				false);
 
-		imageNames = FXCollections.observableArrayList(imageNam);
+		Photo test = new Photo("image 1", image);
+		Photo test2 = new Photo("image 2", image2);
 
-		imageList.setItems(imageNames);
+		selectedAlbum.addPhoto(test);
+		selectedAlbum.addPhoto(test2);
 
-		images.add(image);
+		images = selectedAlbum.getPhotos();
 
-		imageList.setCellFactory(param -> new ListCell<String>() {
-			private ImageView imageView = new ImageView();
+		System.out.println(images.size());
 
-			@Override
-			public void updateItem(String name, boolean empty) {
-				super.updateItem(name, empty);
-				if (empty) {
-					setText(null);
-					setGraphic(null);
-				} else {
-					imageView.setImage(images.get(getIndex()));
-					setText(name);
-					setGraphic(imageView);
-				}
-			}
-		});
+		imageList.setItems(
+				FXCollections.observableArrayList(selectedAlbum.getPhotos()));
+
+		imageList.setCellFactory(
+				new Callback<ListView<Photo>, ListCell<Photo>>() {
+					@Override
+					public ListCell<Photo> call(ListView<Photo> arg0) {
+						ListCell<Photo> cell = new ListCell<Photo>() {
+							@Override
+							protected void updateItem(Photo photo,
+									boolean bt1) {
+								super.updateItem(photo, bt1);
+								if (photo != null) {
+									Image img = images.get(getIndex())
+											.getImage();
+									ImageView imgview = new ImageView(img);
+									setGraphic(imgview);
+									setText(images.get(getIndex()).getName());
+								} else {
+									setGraphic(null);
+									setText("");
+								}
+							}
+						};
+						return cell;
+					};
+
+				});
+
+		// imageList.setItems(FXCollections.observableArrayList(images));
 
 	}
 
-	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
+	public void buttonClick(ActionEvent e)
+			throws IOException, ClassNotFoundException {
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-		photoLoader = new FXMLLoader(getClass().getResource("/view/photoView.fxml"));
+		photoLoader = new FXMLLoader(
+				getClass().getResource("/view/photoView.fxml"));
 		photoParent = (Parent) photoLoader.load();
 		Scene photoScene = new Scene(photoParent);
 		photoScene.getRoot().setStyle("-fx-font-family: 'serif'");
 		photoController photoController = photoLoader.getController();
 
 		Button b = (Button) e.getSource();
+
 		int index = imageList.getSelectionModel().getSelectedIndex();
+
 		if (b == logout) {
 			stage.setScene(root);
 		}
@@ -127,22 +163,35 @@ public class albumController {
 			stage.setScene(photoScene);
 		}
 		if (b == addPhoto) {
-			photoFile = new File("/Users/bolahenine/Desktop/pic.jpeg");
-			Image image2 = new Image(photoFile.toURI().toString(), 50, 50, false, false);
+			FileChooser chooser = new FileChooser();
+			chooser.setTitle("Choose Image");
+			chooser.getExtensionFilters().addAll(
+					new ExtensionFilter("Image Files", "*.bmp", "*.BMP",
+							"*.gif", "*.GIF", "*.jpg", "*.JPG", "*.png",
+							"*.PNG"),
+					new ExtensionFilter("Bitmap Files", "*.bmp", "*.BMP"),
+					new ExtensionFilter("GIF Files", "*.gif", "*.GIF"),
+					new ExtensionFilter("JPEG Files", "*.jpg", "*.JPG"),
+					new ExtensionFilter("PNG Files", "*.png", "*.PNG"));
+			File selectedFile = chooser.showOpenDialog(stage);
 
-			images.add(image2);
+			// photoFile = new File(
+			// "/Users/bolahenine/Desktop/cs213/photos17/src/view/167408.jpeg");
+			Image image = new Image(selectedFile.toURI().toString(), 50, 50,
+					false, false);
+			Photo newPhoto = new Photo(selectedFile.getName(), image);
+			//
+			selectedAlbum.addPhoto(newPhoto);
 
-			String[] tempArr = new String[imageNam.length + 1];
+			imageList.setItems(FXCollections
+					.observableArrayList(selectedAlbum.getPhotos()));
 
-			for (int i = 0; i < imageNam.length; i++) {
-				tempArr[i] = imageNam[i];
-			}
-			tempArr[tempArr.length - 1] = "cool";
-
-			imageNames = FXCollections.observableArrayList(tempArr);
-
-			imageList.setItems(imageNames);
 		}
+
+		if (b == deletePhoto) {
+			imageList.getItems().remove(index);
+		}
+
 	}
 
 }

@@ -25,4 +25,12 @@ public class Album implements java.io.Serializable {
 		name = albumName;
 	}
 
+	public void addPhoto(Photo image) {
+		photos.add(image);
+	}
+
+	public ArrayList<Photo> getPhotos() {
+		return photos;
+	}
+
 }

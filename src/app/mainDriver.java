@@ -9,6 +9,7 @@ public class mainDriver extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		//
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();

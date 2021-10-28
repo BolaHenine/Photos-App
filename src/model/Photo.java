@@ -12,10 +12,10 @@ public class Photo implements java.io.Serializable {
 	private Calendar date;
 	private Image photo;
 
-	public Photo(String photoName, Image image, Calendar createdDate) {
+	public Photo(String photoName, Image image) {
 		name = photoName;
 		photo = image;
-		date = createdDate;
+		// date = createdDate;
 	}
 
 	public String getName() {
