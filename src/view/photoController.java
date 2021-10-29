@@ -1,6 +1,8 @@
 package view;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,10 +13,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.Photo;
 import model.User;
 
@@ -34,7 +38,7 @@ public class photoController {
 	@FXML
 	Label photoName;
 	@FXML
-	ListView<String> tagList;
+	ListView<Photo> tagList;
 	@FXML
 	ImageView photoView;
 	@FXML
@@ -43,6 +47,10 @@ public class photoController {
 	TextField captionName;
 	@FXML
 	TextField dateCreated;
+	@FXML
+	TextField tagName;
+	@FXML
+	TextField tagValue;
 
 	FXMLLoader photoLoader;
 
@@ -53,6 +61,8 @@ public class photoController {
 	private int userIndex;
 	private int photoIndex;
 	private int albumIndex;
+
+	private ArrayList<HashMap<String, String>> tags = new ArrayList<HashMap<String, String>>();
 
 	public void start(int userNumber, int albumNumber, int photoNumber) throws ClassNotFoundException, IOException {
 
@@ -91,7 +101,32 @@ public class photoController {
 		if (b == close) {
 			stage.close();
 		}
+		if (b == addTag) {
+			tags = photo.getTag();
 
+//			tagList.setItems(FXCollections.observableArrayList(photo.getTag()));
+
+			tagList.setCellFactory(new Callback<ListView<Photo>, ListCell<Photo>>() {
+				@Override
+				public ListCell<Photo> call(ListView<Photo> arg0) {
+					ListCell<Photo> cell = new ListCell<Photo>() {
+						@Override
+						protected void updateItem(Photo tag, boolean bt1) {
+							super.updateItem(tag, bt1);
+							if (tag != null) {
+								setText(tags.get(getIndex()).get(tagValue));
+							} else {
+
+								setText("");
+							}
+						}
+					};
+					return cell;
+				};
+
+			});
+
+		}
 	}
 
 }
