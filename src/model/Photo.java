@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -10,8 +9,7 @@ public class Photo implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1891567810783724951L;
 	private String name;
-	private ArrayList<HashMap<String, String>> tag;
-	private String tagvalue;
+	private HashMap<String, String> tags;
 	private String caption;
 	private Calendar date;
 	private SerializableImage photo;
@@ -42,12 +40,15 @@ public class Photo implements java.io.Serializable {
 		return date;
 	}
 
-	public ArrayList<HashMap<String, String>> getTag() {
-		return tag;
+	public HashMap<String, String> getTag() {
+		if (tags == null) {
+			tags = new HashMap<String, String>();
+		}
+		return tags;
 	}
 
-	public void setTag(ArrayList<HashMap<String, String>> Tag) {
-		tag = Tag;
+	public void addTag(String tagName, String tagValue) {
+		tags.put(tagName, tagValue);
 	}
 
 }

@@ -1,10 +1,11 @@
 package view;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +19,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import model.Photo;
 import model.User;
 
@@ -38,7 +38,7 @@ public class photoController {
 	@FXML
 	Label photoName;
 	@FXML
-	ListView<Photo> tagList;
+	ListView<String> tagList;
 	@FXML
 	ImageView photoView;
 	@FXML
@@ -62,9 +62,10 @@ public class photoController {
 	private int photoIndex;
 	private int albumIndex;
 
-	private ArrayList<HashMap<String, String>> tags = new ArrayList<HashMap<String, String>>();
+	private HashMap<String, String> tags;
 
-	public void start(int userNumber, int albumNumber, int photoNumber) throws ClassNotFoundException, IOException {
+	public void start(int userNumber, int albumNumber, int photoNumber)
+			throws ClassNotFoundException, IOException {
 
 		userIndex = userNumber;
 		photoIndex = photoNumber;
@@ -74,21 +75,53 @@ public class photoController {
 		captionName.setEditable(false);
 		dateCreated.setEditable(false);
 
-		photo = users.get(userNumber).getAlbums().get(albumNumber).getPhotos().get(photoNumber);
+		photo = users.get(userNumber).getAlbums().get(albumNumber).getPhotos()
+				.get(photoNumber);
 		photoName.setText(photo.getName());
 		photoView.setImage(photo.getImage());
 
 		photoName1.setText(photo.getName());
 		captionName.setText(photo.getCaption());
 		dateCreated.setText(photo.getDate().getTime().toString());
+
+		tags = new HashMap<String, String>();
+
+		tags = photo.getTag();
+
+		if (tags != null) {
+			ObservableMap<String, String> observableExtensionToMimeMap = FXCollections
+					.observableMap(tags);
+
+			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
+
+			tagList.setCellFactory(lv -> new ListCell<String>() {
+				@Override
+				public void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (empty) {
+						setText(null);
+					} else {
+						String key = (String) tags.keySet()
+								.toArray()[getIndex()];
+						String valueForFirstKey = tags.get(key);
+						String name = "\"" + key + "\"" + " = " + "\""
+								+ valueForFirstKey + "\"" + " ";
+						setText(name);
+					}
+				}
+			});
+		}
+
 	}
 
 	private void showItemInputDialog() {
 
 	}
 
-	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
+	public void buttonClick(ActionEvent e)
+			throws IOException, ClassNotFoundException {
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -102,29 +135,12 @@ public class photoController {
 			stage.close();
 		}
 		if (b == addTag) {
-			tags = photo.getTag();
+			photo.addTag(tagName.getText(), tagValue.getText());
+			ObservableMap<String, String> observableExtensionToMimeMap = FXCollections
+					.observableMap(tags);
+			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 
-//			tagList.setItems(FXCollections.observableArrayList(photo.getTag()));
-
-			tagList.setCellFactory(new Callback<ListView<Photo>, ListCell<Photo>>() {
-				@Override
-				public ListCell<Photo> call(ListView<Photo> arg0) {
-					ListCell<Photo> cell = new ListCell<Photo>() {
-						@Override
-						protected void updateItem(Photo tag, boolean bt1) {
-							super.updateItem(tag, bt1);
-							if (tag != null) {
-								setText(tags.get(getIndex()).get(tagValue));
-							} else {
-
-								setText("");
-							}
-						}
-					};
-					return cell;
-				};
-
-			});
+			User.writeApp(users);
 
 		}
 	}
