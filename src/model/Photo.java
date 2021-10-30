@@ -16,8 +16,7 @@ public class Photo implements java.io.Serializable {
 	public static final String storeDir = "data";
 	public static final String storeFile = "datas.dat";
 
-	public Photo(String photoName, Image image, Calendar createdDate,
-			String captionName) {
+	public Photo(String photoName, Image image, Calendar createdDate, String captionName) {
 		name = photoName;
 		photo = new SerializableImage(image);
 		date = createdDate;
@@ -49,6 +48,10 @@ public class Photo implements java.io.Serializable {
 
 	public void addTag(String tagName, String tagValue) {
 		tags.put(tagName, tagValue);
+	}
+
+	public void deleteTag(String tagName, String tagValue) {
+		tags.remove(tagName, tagValue);
 	}
 
 	public void setName(String name, Calendar modifiedDate) {
