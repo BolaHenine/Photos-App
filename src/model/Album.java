@@ -33,4 +33,8 @@ public class Album implements java.io.Serializable {
 		return photos;
 	}
 
+	public void removePhoto(Photo image) {
+		photos.remove(image);
+	}
+
 }

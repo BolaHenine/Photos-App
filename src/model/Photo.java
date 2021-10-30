@@ -51,4 +51,14 @@ public class Photo implements java.io.Serializable {
 		tags.put(tagName, tagValue);
 	}
 
+	public void setName(String name, Calendar modifiedDate) {
+		this.name = name;
+		date = modifiedDate;
+	}
+
+	public void recaption(String captionName, Calendar modifiedDate) {
+		caption = captionName;
+		date = modifiedDate;
+	}
+
 }
