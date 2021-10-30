@@ -77,7 +77,6 @@ public class photoController {
 		photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().get(photoIndex);
 		photoName.setText(photo.getName());
 		photoView.setImage(photo.getImage());
-		System.out.print(photoIndex);
 		photoName1.setText(photo.getName());
 		captionName.setText(photo.getCaption());
 		dateCreated.setText(photo.getDate().getTime().toString());
