@@ -25,7 +25,7 @@
       <ListView fx:id="albumList" layoutX="36.0" layoutY="106.0" prefHeight="189.0" prefWidth="544.0" />
       <Button fx:id="editAlbum" layoutX="438.0" layoutY="306.0" mnemonicParsing="false" text="Edit Album Name" onAction="#buttonClick" />
       <Button fx:id="openAlbum" layoutX="42.0" layoutY="344.0" mnemonicParsing="false" text="Open Album" onAction="#buttonClick" />
-      <Button fx:id="Search" layoutX="272.0" layoutY="51.0" mnemonicParsing="false" text="Search" onAction="#buttonClick" />
+      <Button fx:id="search" layoutX="272.0" layoutY="51.0" mnemonicParsing="false" text="Search" onAction="#buttonClick" />
       <Button fx:id="deleteAlbum" layoutX="449.0" layoutY="344.0" mnemonicParsing="false" text="Delete Album" onAction="#buttonClick" />
       <Button fx:id="addAlbum" layoutX="42.0" layoutY="306.0" mnemonicParsing="false" text="Add Album" onAction="#buttonClick" />
       <TextField fx:id="albumName" layoutX="220.0" layoutY="331.0" promptText="Album Name:" />
