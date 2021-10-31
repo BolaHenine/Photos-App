@@ -65,8 +65,7 @@ public class photoController {
 
 	private HashMap<String, List<String>> tags;
 
-	public void start(int userNumber, int albumNumber, int photoNumber)
-			throws ClassNotFoundException, IOException {
+	public void start(int userNumber, int albumNumber, int photoNumber) throws ClassNotFoundException, IOException {
 
 		userIndex = userNumber;
 		photoIndex = photoNumber;
@@ -76,8 +75,7 @@ public class photoController {
 		captionName.setEditable(false);
 		dateCreated.setEditable(false);
 
-		photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos()
-				.get(photoIndex);
+		photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().get(photoIndex);
 		photoName.setText(photo.getName());
 		photoView.setImage(photo.getImage());
 		photoName1.setText(photo.getName());
@@ -87,8 +85,7 @@ public class photoController {
 		tags = photo.getTag();
 
 		if (tags != null) {
-			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections
-					.observableMap(tags);
+			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
 
 			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 
@@ -100,11 +97,9 @@ public class photoController {
 						setText(null);
 					} else {
 						List<String> valueForFirstKey;
-						String key = (String) tags.keySet()
-								.toArray()[getIndex()];
+						String key = (String) tags.keySet().toArray()[getIndex()];
 						valueForFirstKey = tags.get(key);
-						String name = "\"" + key + "\"" + " = " + "\""
-								+ valueForFirstKey + "\"" + " ";
+						String name = "\"" + key + "\"" + " = " + "\"" + valueForFirstKey + "\"" + " ";
 						setText(name);
 					}
 				}
@@ -113,10 +108,8 @@ public class photoController {
 
 	}
 
-	public void buttonClick(ActionEvent e)
-			throws IOException, ClassNotFoundException {
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getResource("/view/loginPage.fxml"));
+	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 
@@ -157,8 +150,7 @@ public class photoController {
 
 			photo.deleteTag(item);
 			tags.remove(item);
-			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections
-					.observableMap(tags);
+			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
 			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 			User.writeApp(users);
 
@@ -168,8 +160,7 @@ public class photoController {
 		}
 		if (b == addTag) {
 			photo.addTag(tagName.getText(), tagValue.getText());
-			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections
-					.observableMap(tags);
+			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
 			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 
 			User.writeApp(users);
