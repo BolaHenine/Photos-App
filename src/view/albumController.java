@@ -2,8 +2,8 @@ package view;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Optional;
 
 import javafx.collections.FXCollections;
@@ -77,7 +77,7 @@ public class albumController {
 
 	private Album selectedAlbum;
 
-	private Calendar calendar = Calendar.getInstance();
+	private LocalDateTime calendar = LocalDateTime.now();
 
 	private ArrayList<Album> allAlbums = new ArrayList<Album>();
 
@@ -175,7 +175,7 @@ public class albumController {
 			stage.setScene(photoScene);
 		}
 		if (b == addPhoto) {
-			calendar = Calendar.getInstance();
+
 			FileChooser chooser = new FileChooser();
 			chooser.setTitle("Choose Image");
 			chooser.getExtensionFilters().addAll(

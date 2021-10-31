@@ -1,6 +1,7 @@
 package view;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -37,6 +39,10 @@ public class searchController {
 	TextField tagName;
 	@FXML
 	TextField tagValue;
+	@FXML
+	DatePicker fromDate;
+	@FXML
+	DatePicker toDate;
 
 	private ObservableList<User> users;
 
@@ -105,14 +111,29 @@ public class searchController {
 		}
 
 		if (b == search) {
-			searchedImages.clear();
-			for (int i = 0; i < allImages.size(); i++) {
-				HashMap<String, List<String>> tagMap = allImages.get(i)
-						.getTag();
-				for (int j = 0; j < tagMap.size(); j++) {
-					String key = (String) tagMap.keySet().toArray()[j];
-					if (key.equals(tagName.getText())
-							&& tagMap.get(key).contains(tagValue.getText())) {
+			if (tagName.getText() != null && tagValue.getText() != null) {
+				searchedImages.clear();
+				for (int i = 0; i < allImages.size(); i++) {
+					HashMap<String, List<String>> tagMap = allImages.get(i)
+							.getTag();
+					for (int j = 0; j < tagMap.size(); j++) {
+						String key = (String) tagMap.keySet().toArray()[j];
+						if (key.equals(tagName.getText()) && tagMap.get(key)
+								.contains(tagValue.getText())) {
+							searchedImages.add(allImages.get(i));
+						}
+					}
+
+				}
+			}
+
+			if (fromDate.getValue() != null && toDate.getValue() != null) {
+				searchedImages.clear();
+				for (int i = 0; i < allImages.size(); i++) {
+					LocalDateTime imageTime = allImages.get(i).getDate();
+					if (imageTime.isAfter(fromDate.getValue().atStartOfDay())
+							&& imageTime.isBefore(
+									toDate.getValue().atStartOfDay())) {
 						searchedImages.add(allImages.get(i));
 					}
 				}
@@ -149,5 +170,6 @@ public class searchController {
 
 					});
 		}
+
 	}
 }

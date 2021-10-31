@@ -22,8 +22,8 @@
       <TextField fx:id="tagName" layoutX="54.0" layoutY="310.0" prefHeight="25.0" prefWidth="106.0" promptText="Tag Name" />
       <TextField fx:id="tagValue" layoutX="178.0" layoutY="310.0" prefHeight="25.0" prefWidth="106.0" promptText="Tag Value" />
       <Button fx:id="search" layoutX="284.0" layoutY="344.0" mnemonicParsing="false" text="Search" onAction="#buttonClick"  />
-      <DatePicker layoutX="457.0" layoutY="310.0" prefHeight="25.0" prefWidth="116.0" />
-      <DatePicker layoutX="329.0" layoutY="310.0" prefHeight="25.0" prefWidth="116.0" />
+      <DatePicker fx:id="toDate" layoutX="457.0" layoutY="310.0" prefHeight="25.0" prefWidth="116.0" />
+      <DatePicker fx:id="fromDate" layoutX="329.0" layoutY="310.0" prefHeight="25.0" prefWidth="116.0" />
       <Label layoutX="329.0" layoutY="289.0" text="From:" />
       <Label layoutX="457.0" layoutY="289.0" text="To:" />
    </children>

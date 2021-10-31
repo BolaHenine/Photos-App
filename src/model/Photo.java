@@ -1,7 +1,7 @@
 package model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,12 +13,12 @@ public class Photo implements java.io.Serializable {
 	private String name;
 	private HashMap<String, List<String>> tags;
 	private String caption;
-	private Calendar date;
+	private LocalDateTime date;
 	private SerializableImage photo;
 	public static final String storeDir = "data";
 	public static final String storeFile = "datas.dat";
 
-	public Photo(String photoName, Image image, Calendar createdDate,
+	public Photo(String photoName, Image image, LocalDateTime createdDate,
 			String captionName) {
 		name = photoName;
 		photo = new SerializableImage(image);
@@ -38,7 +38,7 @@ public class Photo implements java.io.Serializable {
 		return photo.getImage();
 	}
 
-	public Calendar getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
@@ -58,12 +58,12 @@ public class Photo implements java.io.Serializable {
 		tags.remove(tagName);
 	}
 
-	public void setName(String name, Calendar modifiedDate) {
+	public void setName(String name, LocalDateTime modifiedDate) {
 		this.name = name;
 		date = modifiedDate;
 	}
 
-	public void recaption(String captionName, Calendar modifiedDate) {
+	public void recaption(String captionName, LocalDateTime modifiedDate) {
 		caption = captionName;
 		date = modifiedDate;
 	}
