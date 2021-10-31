@@ -77,13 +77,17 @@ public class photoController {
 
 		photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().get(photoIndex);
 		photoName.setText(photo.getName());
+		photoView.setFitHeight(199);
+		photoView.setFitWidth(357);
 		photoView.setImage(photo.getImage());
+		photoView.setPreserveRatio(false);
+		photoView.setSmooth(false);
+
 		photoName1.setText(photo.getName());
 		captionName.setText(photo.getCaption());
 		dateCreated.setText(photo.getDate().getTime().toString());
 
 		tags = photo.getTag();
-
 		if (tags != null) {
 			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
 
@@ -131,6 +135,9 @@ public class photoController {
 			photoName1.setText(photo.getName());
 			captionName.setText(photo.getCaption());
 			dateCreated.setText(photo.getDate().getTime().toString());
+			tags = photo.getTag();
+			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
+			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 
 		}
 		if (b == right) {
@@ -143,6 +150,9 @@ public class photoController {
 			photoName1.setText(photo.getName());
 			captionName.setText(photo.getCaption());
 			dateCreated.setText(photo.getDate().getTime().toString());
+			tags = photo.getTag();
+			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
+			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 
 		}
 
@@ -162,9 +172,9 @@ public class photoController {
 			photo.addTag(tagName.getText(), tagValue.getText());
 			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
 			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
-
 			User.writeApp(users);
-
+			tagName.clear();
+			tagValue.clear();
 		}
 	}
 
