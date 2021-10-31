@@ -112,36 +112,37 @@ public class photoController {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
+
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		int index = tagList.getSelectionModel().getSelectedIndex();
 		Button b = (Button) e.getSource();
-
+		int lastPhotoIndex = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().toArray().length;
 		if (b == logout) {
 			stage.setScene(root);
 		}
-		if (b == left && photoIndex >= 0) {
-			try {
+		if (b == left) {
+			if (photoIndex > 0) {
 				photoIndex = photoIndex - 1;
-				photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().get(photoIndex);
-				photoName.setText(photo.getName());
-				photoView.setImage(photo.getImage());
-				photoName1.setText(photo.getName());
-				captionName.setText(photo.getCaption());
-				dateCreated.setText(photo.getDate().getTime().toString());
-				tags = photo.getTag();
-			} catch (Exception e1) {
-				left.disableProperty();
 			}
-		}
-		if (b == right) {
-			photoIndex = photoIndex + 1;
 			photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().get(photoIndex);
 			photoName.setText(photo.getName());
 			photoView.setImage(photo.getImage());
 			photoName1.setText(photo.getName());
 			captionName.setText(photo.getCaption());
 			dateCreated.setText(photo.getDate().getTime().toString());
-			tags = photo.getTag();
+
+		}
+		if (b == right) {
+			if (photoIndex < lastPhotoIndex - 1) {
+				photoIndex = photoIndex + 1;
+			}
+			photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().get(photoIndex);
+			photoName.setText(photo.getName());
+			photoView.setImage(photo.getImage());
+			photoName1.setText(photo.getName());
+			captionName.setText(photo.getCaption());
+			dateCreated.setText(photo.getDate().getTime().toString());
+
 		}
 
 		if (b == deleteTag) {
