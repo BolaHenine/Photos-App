@@ -1,7 +1,9 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 import javafx.scene.image.Image;
 
@@ -9,14 +11,15 @@ public class Photo implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1891567810783724951L;
 	private String name;
-	private HashMap<String, String> tags;
+	private HashMap<String, List<String>> tags;
 	private String caption;
 	private Calendar date;
 	private SerializableImage photo;
 	public static final String storeDir = "data";
 	public static final String storeFile = "datas.dat";
 
-	public Photo(String photoName, Image image, Calendar createdDate, String captionName) {
+	public Photo(String photoName, Image image, Calendar createdDate,
+			String captionName) {
 		name = photoName;
 		photo = new SerializableImage(image);
 		date = createdDate;
@@ -39,19 +42,20 @@ public class Photo implements java.io.Serializable {
 		return date;
 	}
 
-	public HashMap<String, String> getTag() {
+	public HashMap<String, List<String>> getTag() {
 		if (tags == null) {
-			tags = new HashMap<String, String>();
+			tags = new HashMap<>();
 		}
 		return tags;
 	}
 
 	public void addTag(String tagName, String tagValue) {
-		tags.put(tagName, tagValue);
+		tags.computeIfAbsent(tagName, k -> new ArrayList<>()).add(tagValue);
+		// tags.put(tagName, tagValue);
 	}
 
-	public void deleteTag(String tagName, String tagValue) {
-		tags.remove(tagName, tagValue);
+	public void deleteTag(String tagName) {
+		tags.remove(tagName);
 	}
 
 	public void setName(String name, Calendar modifiedDate) {

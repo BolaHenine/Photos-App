@@ -2,6 +2,7 @@ package view;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -62,9 +63,10 @@ public class photoController {
 	private int photoIndex;
 	private int albumIndex;
 
-	private HashMap<String, String> tags;
+	private HashMap<String, List<String>> tags;
 
-	public void start(int userNumber, int albumNumber, int photoNumber) throws ClassNotFoundException, IOException {
+	public void start(int userNumber, int albumNumber, int photoNumber)
+			throws ClassNotFoundException, IOException {
 
 		userIndex = userNumber;
 		photoIndex = photoNumber;
@@ -74,19 +76,19 @@ public class photoController {
 		captionName.setEditable(false);
 		dateCreated.setEditable(false);
 
-		photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().get(photoIndex);
+		photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos()
+				.get(photoIndex);
 		photoName.setText(photo.getName());
 		photoView.setImage(photo.getImage());
 		photoName1.setText(photo.getName());
 		captionName.setText(photo.getCaption());
 		dateCreated.setText(photo.getDate().getTime().toString());
 
-		tags = new HashMap<String, String>();
-
 		tags = photo.getTag();
 
 		if (tags != null) {
-			ObservableMap<String, String> observableExtensionToMimeMap = FXCollections.observableMap(tags);
+			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections
+					.observableMap(tags);
 
 			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 
@@ -97,9 +99,12 @@ public class photoController {
 					if (empty) {
 						setText(null);
 					} else {
-						String key = (String) tags.keySet().toArray()[getIndex()];
-						String valueForFirstKey = tags.get(key);
-						String name = "\"" + key + "\"" + " = " + "\"" + valueForFirstKey + "\"" + " ";
+						List<String> valueForFirstKey;
+						String key = (String) tags.keySet()
+								.toArray()[getIndex()];
+						valueForFirstKey = tags.get(key);
+						String name = "\"" + key + "\"" + " = " + "\""
+								+ valueForFirstKey + "\"" + " ";
 						setText(name);
 					}
 				}
@@ -108,12 +113,15 @@ public class photoController {
 
 	}
 
-	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
+	public void buttonClick(ActionEvent e)
+			throws IOException, ClassNotFoundException {
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		int index = tagList.getSelectionModel().getSelectedIndex();
+		String item = tagList.getSelectionModel().getSelectedItem();
 		Button b = (Button) e.getSource();
 
 		if (b == logout) {
@@ -122,7 +130,8 @@ public class photoController {
 		if (b == left && photoIndex >= 0) {
 			try {
 				photoIndex = photoIndex - 1;
-				photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().get(photoIndex);
+				photo = users.get(userIndex).getAlbums().get(albumIndex)
+						.getPhotos().get(photoIndex);
 				photoName.setText(photo.getName());
 				photoView.setImage(photo.getImage());
 				photoName1.setText(photo.getName());
@@ -135,7 +144,8 @@ public class photoController {
 		}
 		if (b == right) {
 			photoIndex = photoIndex + 1;
-			photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().get(photoIndex);
+			photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos()
+					.get(photoIndex);
 			photoName.setText(photo.getName());
 			photoView.setImage(photo.getImage());
 			photoName1.setText(photo.getName());
@@ -145,16 +155,22 @@ public class photoController {
 		}
 
 		if (b == deleteTag) {
-			photo.deleteTag(tagName.getText(), tagName.getText());
-			tagList.getItems().remove(index);
+
+			photo.deleteTag(item);
+			tags.remove(item);
+			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections
+					.observableMap(tags);
+			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 			User.writeApp(users);
+
 		}
 		if (b == close) {
 			stage.close();
 		}
 		if (b == addTag) {
 			photo.addTag(tagName.getText(), tagValue.getText());
-			ObservableMap<String, String> observableExtensionToMimeMap = FXCollections.observableMap(tags);
+			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections
+					.observableMap(tags);
 			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 
 			User.writeApp(users);
