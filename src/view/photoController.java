@@ -34,6 +34,8 @@ public class photoController {
 	@FXML
 	Button right;
 	@FXML
+	Button back;
+	@FXML
 	Button addTag;
 	@FXML
 	Button deleteTag;
@@ -138,6 +140,10 @@ public class photoController {
 
 		if (b == logout) {
 			stage.setScene(root);
+		}
+		if (b == back) {
+			albumcontroller.start(userIndex, albumIndex);
+			stage.setScene(albumScene);
 		}
 		if (b == left) {
 			if (photoIndex > 0) {

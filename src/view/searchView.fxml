@@ -13,11 +13,11 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.searchController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.searchController">
    <children>
       <Label alignment="CENTER" layoutX="243.0" layoutY="25.0" prefHeight="36.0" prefWidth="134.0" text="Search">
          <font>
-            <Font size="20.0" />
+            <Font name = "Arial" size="20.0" />
          </font>
       </Label>
       <Button fx:id="back" layoutX="25.0" layoutY="31.0" mnemonicParsing="false" text="Back" onAction="#buttonClick" />

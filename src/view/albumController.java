@@ -37,6 +37,8 @@ public class albumController {
 	@FXML
 	Button logout;
 	@FXML
+	Button back;
+	@FXML
 	Button close;
 	@FXML
 	Button editName;
@@ -176,6 +178,10 @@ public class albumController {
 		}
 		if (b == close) {
 			stage.close();
+		}
+		if (b == back) {
+			usercontroller.start(userIndex, username);
+			stage.setScene(userScene);
 		}
 		if (b == openPhoto) {
 			photoController.start(userIndex, albumIndex, index);

@@ -41,6 +41,8 @@ public class searchController {
 	@FXML
 	Button logout;
 	@FXML
+	Button back;
+	@FXML
 	Button close;
 	@FXML
 	ListView<Photo> searchResults;
