@@ -15,7 +15,7 @@ public class mainDriver extends Application {
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		primaryStage.setScene(root);
-		primaryStage.setTitle("asd");
+		primaryStage.setTitle("Photos");
 		primaryStage.setResizable(false);
 		primaryStage.show();
 		//

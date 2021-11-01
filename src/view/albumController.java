@@ -37,6 +37,8 @@ public class albumController {
 	@FXML
 	Button logout;
 	@FXML
+	Button back;
+	@FXML
 	Button close;
 	@FXML
 	Button editName;
@@ -66,6 +68,9 @@ public class albumController {
 
 	Parent photoParent;
 
+	FXMLLoader userLoader;
+
+	Parent userParent;
 	private ObservableList<User> users;
 
 	private ArrayList<Photo> images = new ArrayList<Photo>();
@@ -73,16 +78,13 @@ public class albumController {
 	private int userIndex;
 	private int albumIndex;
 
-	private File photoFile;
-
 	private Album selectedAlbum;
 
 	private LocalDateTime calendar = LocalDateTime.now();
 
 	private ArrayList<Album> allAlbums = new ArrayList<Album>();
 
-	public void start(int userNumber, int albumNumber)
-			throws ClassNotFoundException, IOException {
+	public void start(int userNumber, int albumNumber) throws ClassNotFoundException, IOException {
 
 		userIndex = userNumber;
 
@@ -94,42 +96,38 @@ public class albumController {
 
 		selectedAlbum = users.get(userNumber).getAlbums().get(albumNumber);
 
-		albumName.setText(
-				users.get(userNumber).getAlbums().get(albumNumber).getName());
+		albumName.setText(users.get(userNumber).getAlbums().get(albumNumber).getName());
 
 		images = selectedAlbum.getPhotos();
 
-		imageList.setItems(
-				FXCollections.observableArrayList(selectedAlbum.getPhotos()));
+		imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
 
-		imageList.setCellFactory(
-				new Callback<ListView<Photo>, ListCell<Photo>>() {
+		imageList.setCellFactory(new Callback<ListView<Photo>, ListCell<Photo>>() {
+			@Override
+			public ListCell<Photo> call(ListView<Photo> arg0) {
+				ListCell<Photo> cell = new ListCell<Photo>() {
 					@Override
-					public ListCell<Photo> call(ListView<Photo> arg0) {
-						ListCell<Photo> cell = new ListCell<Photo>() {
-							@Override
-							protected void updateItem(Photo photo,
-									boolean bt1) {
-								super.updateItem(photo, bt1);
-								if (photo != null) {
-									Image img = images.get(getIndex())
-											.getImage();
-									ImageView imgview = new ImageView(img);
-									setGraphic(imgview);
-									setText(images.get(getIndex()).getName());
-								} else {
-									setGraphic(null);
-									setText("");
-								}
-							}
-						};
-						return cell;
-					};
+					protected void updateItem(Photo photo, boolean bt1) {
+						super.updateItem(photo, bt1);
+						if (photo != null) {
+							Image img = images.get(getIndex()).getImage();
+							ImageView imgview = new ImageView(img);
+							imgview.setFitWidth(50);
+							imgview.setFitHeight(50);
+							setGraphic(imgview);
+							setText(images.get(getIndex()).getName());
+						} else {
+							setGraphic(null);
+							setText("");
+						}
+					}
+				};
+				return cell;
+			};
 
-				});
+		});
 
-		imageList.getSelectionModel().selectedIndexProperty()
-				.addListener((obs) -> showItemInputDialog());
+		imageList.getSelectionModel().selectedIndexProperty().addListener((obs) -> showItemInputDialog());
 
 	}
 
@@ -144,20 +142,24 @@ public class albumController {
 
 	}
 
-	public void buttonClick(ActionEvent e)
-			throws IOException, ClassNotFoundException {
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getResource("/view/loginPage.fxml"));
+	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-		photoLoader = new FXMLLoader(
-				getClass().getResource("/view/photoView.fxml"));
+		photoLoader = new FXMLLoader(getClass().getResource("/view/photoView.fxml"));
 		photoParent = (Parent) photoLoader.load();
 		Scene photoScene = new Scene(photoParent);
 		photoScene.getRoot().setStyle("-fx-font-family: 'serif'");
 		photoController photoController = photoLoader.getController();
+
+		userLoader = new FXMLLoader(getClass().getResource("/view/userView.fxml"));
+		userParent = (Parent) userLoader.load();
+		Scene userScene = new Scene(userParent);
+		userScene.getRoot().setStyle("-fx-font-family: 'serif'");
+		userController usercontroller = userLoader.getController();
+		String username = users.get(userIndex).getName();
 
 		Button b = (Button) e.getSource();
 
@@ -170,6 +172,10 @@ public class albumController {
 		if (b == close) {
 			stage.close();
 		}
+		if (b == back) {
+			usercontroller.start(userIndex, username);
+			stage.setScene(userScene);
+		}
 		if (b == openPhoto) {
 			photoController.start(userIndex, albumIndex, index);
 			stage.setScene(photoScene);
@@ -178,24 +184,19 @@ public class albumController {
 
 			FileChooser chooser = new FileChooser();
 			chooser.setTitle("Choose Image");
-			chooser.getExtensionFilters().addAll(
-					new ExtensionFilter("Image Files", "*.bmp", "*.BMP",
-							"*.gif", "*.GIF", "*.jpg", "*.JPG", "*.png",
-							"*.PNG"),
-					new ExtensionFilter("Bitmap Files", "*.bmp", "*.BMP"),
-					new ExtensionFilter("GIF Files", "*.gif", "*.GIF"),
-					new ExtensionFilter("JPEG Files", "*.jpg", "*.JPG"),
-					new ExtensionFilter("PNG Files", "*.png", "*.PNG"));
+			chooser.getExtensionFilters()
+					.addAll(new ExtensionFilter("Image Files", "*.bmp", "*.BMP", "*.gif", "*.GIF", "*.jpg", "*.JPG",
+							"*.png", "*.PNG"), new ExtensionFilter("Bitmap Files", "*.bmp", "*.BMP"),
+							new ExtensionFilter("GIF Files", "*.gif", "*.GIF"),
+							new ExtensionFilter("JPEG Files", "*.jpg", "*.JPG"),
+							new ExtensionFilter("PNG Files", "*.png", "*.PNG"));
 			File selectedFile = chooser.showOpenDialog(stage);
 			if (selectedFile != null) {
-				Image image = new Image(selectedFile.toURI().toString(), 50, 50,
-						false, false);
-				Photo newPhoto = new Photo(selectedFile.getName(), image,
-						calendar, captionName.getText());
+				Image image = new Image(selectedFile.toURI().toString());
+				Photo newPhoto = new Photo(selectedFile.getName(), image, calendar, captionName.getText());
 				selectedAlbum.addPhoto(newPhoto);
 				User.writeApp(users);
-				imageList.setItems(FXCollections
-						.observableArrayList(selectedAlbum.getPhotos()));
+				imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
 			}
 
 		}
@@ -207,24 +208,20 @@ public class albumController {
 		}
 
 		if (b == editName) {
-			selectedAlbum.getPhotos().get(index).setName(photoName.getText(),
-					calendar);
+			selectedAlbum.getPhotos().get(index).setName(photoName.getText(), calendar);
 			User.writeApp(users);
-			imageList.setItems(FXCollections
-					.observableArrayList(selectedAlbum.getPhotos()));
+			imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
 		}
 
 		if (b == recaption) {
-			selectedAlbum.getPhotos().get(index)
-					.recaption(captionName.getText(), calendar);
+			selectedAlbum.getPhotos().get(index).recaption(captionName.getText(), calendar);
 			User.writeApp(users);
 		}
 
 		if (b == move) {
 			Album albumMoveto = null;
 
-			String week_days[] = {"Monday", "Tuesday", "Wednesday", "Thursday",
-					"Friday"};
+			String week_days[] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
 
 			ArrayList<String> albums = new ArrayList<String>();
 
@@ -234,8 +231,7 @@ public class albumController {
 				}
 			}
 
-			ComboBox combo_box = new ComboBox(
-					FXCollections.observableArrayList(albums));
+			ComboBox combo_box = new ComboBox(FXCollections.observableArrayList(albums));
 
 			combo_box.setPromptText("Please select the Album to move it to");
 
@@ -243,8 +239,7 @@ public class albumController {
 			dialog.setTitle("Confirmation required");
 			dialog.setHeaderText("Are you sure you want to delete the song");
 			DialogPane dialogPane = dialog.getDialogPane();
-			dialogPane.getButtonTypes().addAll(ButtonType.OK,
-					ButtonType.CANCEL);
+			dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
 			dialog.getDialogPane().setContent(combo_box);
 
@@ -252,8 +247,7 @@ public class albumController {
 			if (result.isPresent() && result.get() == ButtonType.OK) {
 
 				for (int i = 0; i < allAlbums.size(); i++) {
-					if (allAlbums.get(i).getName()
-							.equals(combo_box.getValue())) {
+					if (allAlbums.get(i).getName().equals(combo_box.getValue())) {
 						albumMoveto = allAlbums.get(i);
 					}
 				}
@@ -263,8 +257,7 @@ public class albumController {
 			}
 
 			User.writeApp(users);
-			imageList.setItems(FXCollections
-					.observableArrayList(selectedAlbum.getPhotos()));
+			imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
 		}
 
 	}

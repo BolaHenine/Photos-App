@@ -9,13 +9,14 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.searchController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.searchController">
    <children>
       <Label alignment="CENTER" layoutX="243.0" layoutY="25.0" prefHeight="36.0" prefWidth="134.0" text="Search">
          <font>
-            <Font size="20.0" />
+            <Font name = "Arial" size="20.0" />
          </font>
       </Label>
+      <Button fx:id="back" layoutX="25.0" layoutY="31.0" mnemonicParsing="false" text="Back" onAction="#buttonClick" />
       <Button fx:id="logout" layoutX="498.0" layoutY="31.0" mnemonicParsing="false" text="Logout" onAction="#buttonClick" />
       <Button  fx:id="close" layoutX="559.0" layoutY="31.0" mnemonicParsing="false" text="X" textFill="RED" onAction="#buttonClick" />
       <ListView fx:id="searchResults" layoutX="54.0" layoutY="93.0" prefHeight="182.0" prefWidth="492.0" />
@@ -24,7 +25,15 @@
       <Button fx:id="search" layoutX="284.0" layoutY="344.0" mnemonicParsing="false" text="Search" onAction="#buttonClick"  />
       <DatePicker fx:id="toDate" layoutX="457.0" layoutY="310.0" prefHeight="25.0" prefWidth="116.0" />
       <DatePicker fx:id="fromDate" layoutX="329.0" layoutY="310.0" prefHeight="25.0" prefWidth="116.0" />
-      <Label layoutX="329.0" layoutY="289.0" text="From:" />
-      <Label layoutX="457.0" layoutY="289.0" text="To:" />
+      <Label layoutX="329.0" layoutY="289.0" text="From:" >
+      <font>
+            <Font name="Arial" size="13.0" />
+         </font>
+         </Label>
+      <Label layoutX="457.0" layoutY="289.0" text="To:" >
+      <font>
+            <Font name="Arial" size="13.0" />
+         </font>
+         </Label>
    </children>
 </AnchorPane>

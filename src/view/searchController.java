@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -32,6 +33,8 @@ public class searchController {
 	@FXML
 	Button logout;
 	@FXML
+	Button back;
+	@FXML
 	Button close;
 	@FXML
 	ListView<Photo> searchResults;
@@ -44,6 +47,9 @@ public class searchController {
 	@FXML
 	DatePicker toDate;
 
+	private Parent userParent;
+	private FXMLLoader userLoader;
+	private int userindex;
 	private ObservableList<User> users;
 
 	private ArrayList<Photo> allImages = new ArrayList<Photo>();
@@ -52,10 +58,9 @@ public class searchController {
 
 	private ArrayList<Album> allAlbums = new ArrayList<Album>();
 
-	public void start(int userIndex)
-			throws ClassNotFoundException, IOException {
+	public void start(int userIndex) throws ClassNotFoundException, IOException {
 		users = User.readApp();
-
+		userindex = userIndex;
 		allAlbums = users.get(userIndex).getAlbums();
 
 		for (int i = 0; i < allAlbums.size(); i++) {
@@ -66,32 +71,30 @@ public class searchController {
 
 		searchResults.setItems(FXCollections.observableArrayList(allImages));
 
-		searchResults.setCellFactory(
-				new Callback<ListView<Photo>, ListCell<Photo>>() {
+		searchResults.setCellFactory(new Callback<ListView<Photo>, ListCell<Photo>>() {
+			@Override
+			public ListCell<Photo> call(ListView<Photo> arg0) {
+				ListCell<Photo> cell = new ListCell<Photo>() {
 					@Override
-					public ListCell<Photo> call(ListView<Photo> arg0) {
-						ListCell<Photo> cell = new ListCell<Photo>() {
-							@Override
-							protected void updateItem(Photo photo,
-									boolean bt1) {
-								super.updateItem(photo, bt1);
-								if (photo != null) {
-									Image img = allImages.get(getIndex())
-											.getImage();
-									ImageView imgview = new ImageView(img);
-									setGraphic(imgview);
-									setText(allImages.get(getIndex())
-											.getName());
-								} else {
-									setGraphic(null);
-									setText("");
-								}
-							}
-						};
-						return cell;
-					};
+					protected void updateItem(Photo photo, boolean bt1) {
+						super.updateItem(photo, bt1);
+						if (photo != null) {
+							Image img = allImages.get(getIndex()).getImage();
+							ImageView imgview = new ImageView(img);
+							imgview.setFitHeight(50);
+							imgview.setFitWidth(50);
+							setGraphic(imgview);
+							setText(allImages.get(getIndex()).getName());
+						} else {
+							setGraphic(null);
+							setText("");
+						}
+					}
+				};
+				return cell;
+			};
 
-				});
+		});
 
 	}
 
@@ -99,9 +102,16 @@ public class searchController {
 		Button b = (Button) e.getSource();
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getResource("/view/loginPage.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
+		root.getRoot().setStyle("-fx-font-family: 'serif'");
+
+		userLoader = new FXMLLoader(getClass().getResource("/view/userView.fxml"));
+		userParent = (Parent) userLoader.load();
+		Scene userScene = new Scene(userParent);
+		userScene.getRoot().setStyle("-fx-font-family: 'serif'");
+		userController usercontroller = userLoader.getController();
+		String username = users.get(userindex).getName();
 
 		if (b == close) {
 			stage.close();
@@ -109,17 +119,27 @@ public class searchController {
 		if (b == logout) {
 			stage.setScene(root);
 		}
+		if (b == back) {
+			try {
+				usercontroller.start(userindex, username);
+				stage.setScene(userScene);
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
+		}
 		if (b == search) {
 			if (tagName.getText() != null && tagValue.getText() != null) {
 				searchedImages.clear();
 				for (int i = 0; i < allImages.size(); i++) {
-					HashMap<String, List<String>> tagMap = allImages.get(i)
-							.getTag();
+					HashMap<String, List<String>> tagMap = allImages.get(i).getTag();
 					for (int j = 0; j < tagMap.size(); j++) {
 						String key = (String) tagMap.keySet().toArray()[j];
-						if (key.equals(tagName.getText()) && tagMap.get(key)
-								.contains(tagValue.getText())) {
+						if (key.equals(tagName.getText()) && tagMap.get(key).contains(tagValue.getText())) {
 							searchedImages.add(allImages.get(i));
 						}
 					}
@@ -132,43 +152,39 @@ public class searchController {
 				for (int i = 0; i < allImages.size(); i++) {
 					LocalDateTime imageTime = allImages.get(i).getDate();
 					if (imageTime.isAfter(fromDate.getValue().atStartOfDay())
-							&& imageTime.isBefore(
-									toDate.getValue().atStartOfDay())) {
+							&& imageTime.isBefore(toDate.getValue().atStartOfDay())) {
 						searchedImages.add(allImages.get(i));
 					}
 				}
 
 			}
 
-			searchResults.setItems(
-					FXCollections.observableArrayList(searchedImages));
+			searchResults.setItems(FXCollections.observableArrayList(searchedImages));
 
-			searchResults.setCellFactory(
-					new Callback<ListView<Photo>, ListCell<Photo>>() {
+			searchResults.setCellFactory(new Callback<ListView<Photo>, ListCell<Photo>>() {
+				@Override
+				public ListCell<Photo> call(ListView<Photo> arg0) {
+					ListCell<Photo> cell = new ListCell<Photo>() {
 						@Override
-						public ListCell<Photo> call(ListView<Photo> arg0) {
-							ListCell<Photo> cell = new ListCell<Photo>() {
-								@Override
-								protected void updateItem(Photo photo,
-										boolean bt1) {
-									super.updateItem(photo, bt1);
-									if (photo != null) {
-										Image img = searchedImages
-												.get(getIndex()).getImage();
-										ImageView imgview = new ImageView(img);
-										setGraphic(imgview);
-										setText(searchedImages.get(getIndex())
-												.getName());
-									} else {
-										setGraphic(null);
-										setText("");
-									}
-								}
-							};
-							return cell;
-						};
+						protected void updateItem(Photo photo, boolean bt1) {
+							super.updateItem(photo, bt1);
+							if (photo != null) {
+								Image img = searchedImages.get(getIndex()).getImage();
+								ImageView imgview = new ImageView(img);
+								imgview.setFitHeight(50);
+								imgview.setFitWidth(50);
+								setGraphic(imgview);
+								setText(searchedImages.get(getIndex()).getName());
+							} else {
+								setGraphic(null);
+								setText("");
+							}
+						}
+					};
+					return cell;
+				};
 
-					});
+			});
 		}
 
 	}
