@@ -20,6 +20,7 @@
             <Font size="20.0" />
          </font>
       </Label>
+      <Button fx:id="back" layoutX="25.0" layoutY="31.0" mnemonicParsing="false" text="Back" onAction="#buttonClick" />
       <Button fx:id="logout" layoutX="498.0" layoutY="31.0" mnemonicParsing="false" text="Logout" onAction="#buttonClick" />
       <Button  fx:id="close" layoutX="559.0" layoutY="31.0" mnemonicParsing="false" text="X" textFill="RED" onAction="#buttonClick" />
       <ListView fx:id="searchResults" layoutX="54.0" layoutY="93.0" prefHeight="182.0" prefWidth="492.0" />
@@ -33,6 +34,7 @@
       <DatePicker fx:id="fromDate" layoutX="329.0" layoutY="310.0" prefHeight="25.0" prefWidth="116.0" />
       <Label layoutX="329.0" layoutY="289.0" text="From:" />
       <Label layoutX="457.0" layoutY="289.0" text="To:" />
+      
       <Button fx:id = "tagSearch" layoutX="119.0" layoutY="350.0" mnemonicParsing="false" text="Search by Tags" onAction="#buttonClick" />
       <GridPane fx:id="dialogGrid" layoutX="94.0" layoutY="102.0" prefHeight="182.0" prefWidth="436.0">
         <columnConstraints>
@@ -54,9 +56,13 @@
             <TextField fx:id="secondTagName" maxWidth="-Infinity" prefHeight="26.0" prefWidth="135.0" promptText="Tag Name" GridPane.rowIndex="4" />
             <TextField fx:id="secondTagValue" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="135.0" promptText="Tag Value" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label fx:id="secondTagNameLabel" text="Tag Name" GridPane.rowIndex="3" />
+          
             <Label fx:id="secondTagValueLabel" text="Tag Value" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            
             <Label fx:id="firstTagNameLabel" text="Tag Value" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            
             <Label fx:id="firstTagValueLabel" text="Tag Name" GridPane.rowIndex="1" />
+            
          </children>
       </GridPane>
    </children>
