@@ -115,6 +115,8 @@ public class albumController {
 									Image img = images.get(getIndex())
 											.getImage();
 									ImageView imgview = new ImageView(img);
+									imgview.setFitWidth(50);
+									imgview.setFitHeight(50);
 									setGraphic(imgview);
 									setText(images.get(getIndex()).getName());
 								} else {
@@ -188,8 +190,7 @@ public class albumController {
 					new ExtensionFilter("PNG Files", "*.png", "*.PNG"));
 			File selectedFile = chooser.showOpenDialog(stage);
 			if (selectedFile != null) {
-				Image image = new Image(selectedFile.toURI().toString(), 50, 50,
-						false, false);
+				Image image = new Image(selectedFile.toURI().toString());
 				Photo newPhoto = new Photo(selectedFile.getName(), image,
 						calendar, captionName.getText());
 				selectedAlbum.addPhoto(newPhoto);
