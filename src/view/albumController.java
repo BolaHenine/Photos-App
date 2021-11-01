@@ -43,8 +43,6 @@ public class albumController {
 	@FXML
 	Button editName;
 	@FXML
-	Button back;
-	@FXML
 	Button openPhoto;
 	@FXML
 	Button deletePhoto;
@@ -243,6 +241,7 @@ public class albumController {
 			combo_box.setPromptText("Please select the Album to move it to");
 
 			Dialog<ButtonType> dialog = new Dialog<>();
+			dialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
 			dialog.setTitle("Confirmation required");
 			dialog.setHeaderText("Are you sure you want to delete the song");
 			DialogPane dialogPane = dialog.getDialogPane();

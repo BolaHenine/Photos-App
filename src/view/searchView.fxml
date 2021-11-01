@@ -32,9 +32,16 @@
       <Button fx:id="addToAlbum" layoutX="251.0" layoutY="350.0" mnemonicParsing="false" text="Add to New Album" onAction="#buttonClick" />
       <DatePicker fx:id="toDate" layoutX="457.0" layoutY="310.0" prefHeight="25.0" prefWidth="116.0" />
       <DatePicker fx:id="fromDate" layoutX="329.0" layoutY="310.0" prefHeight="25.0" prefWidth="116.0" />
-      <Label layoutX="329.0" layoutY="289.0" text="From:" />
-      <Label layoutX="457.0" layoutY="289.0" text="To:" />
-      
+      <Label layoutX="329.0" layoutY="289.0" text="From:" >
+      <font>
+            <Font name = "Arial" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="457.0" layoutY="289.0" text="To:" >
+      <font>
+            <Font name = "Arial" size="13.0" />
+         </font>
+      </Label>
       <Button fx:id = "tagSearch" layoutX="119.0" layoutY="350.0" mnemonicParsing="false" text="Search by Tags" onAction="#buttonClick" />
       <GridPane fx:id="dialogGrid" layoutX="94.0" layoutY="102.0" prefHeight="182.0" prefWidth="436.0">
         <columnConstraints>
@@ -55,14 +62,26 @@
             <TextField fx:id="firstTagValue" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="135.0" promptText="Tag Value" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="secondTagName" maxWidth="-Infinity" prefHeight="26.0" prefWidth="135.0" promptText="Tag Name" GridPane.rowIndex="4" />
             <TextField fx:id="secondTagValue" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="135.0" promptText="Tag Value" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label fx:id="secondTagNameLabel" text="Tag Name" GridPane.rowIndex="3" />
-          
-            <Label fx:id="secondTagValueLabel" text="Tag Value" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            
-            <Label fx:id="firstTagNameLabel" text="Tag Value" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            
-            <Label fx:id="firstTagValueLabel" text="Tag Name" GridPane.rowIndex="1" />
-            
+            <Label fx:id="secondTagNameLabel" text="Tag Name" GridPane.rowIndex="3" >
+          <font>
+            <Font name = "Arial" size="13.0" />
+         </font>
+         </Label>
+            <Label fx:id="secondTagValueLabel" text="Tag Value" GridPane.columnIndex="1" GridPane.rowIndex="3" >
+            <font>
+            <Font name = "Arial" size="13.0" />
+         </font>
+            </Label>
+            <Label fx:id="firstTagNameLabel" text="Tag Value" GridPane.columnIndex="1" GridPane.rowIndex="1" >
+            <font>
+            <Font name = "Arial" size="13.0" />
+         </font>
+            </Label>
+            <Label fx:id="firstTagValueLabel" text="Tag Name" GridPane.rowIndex="1" >
+            <font>
+            <Font name = "Arial" size="13.0" />
+         </font>
+            </Label>
          </children>
       </GridPane>
    </children>

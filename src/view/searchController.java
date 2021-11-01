@@ -55,8 +55,6 @@ public class searchController {
 	@FXML
 	Button tagSearch;
 	@FXML
-	Button back;
-	@FXML
 	TextField secondTagName;
 	@FXML
 	TextField secondTagValue;
@@ -189,6 +187,7 @@ public class searchController {
 		dialog.getDialogPane().setContent(albumName);
 
 		Dialog<ButtonType> tagSearchDialog = new Dialog<>();
+		tagSearchDialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
 		tagSearchDialog.setTitle("Confirmation required");
 		tagSearchDialog.setHeaderText("Select Search Type");
 		DialogPane tagSearchDialogPane = tagSearchDialog.getDialogPane();

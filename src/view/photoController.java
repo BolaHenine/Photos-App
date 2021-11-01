@@ -34,8 +34,6 @@ public class photoController {
 	@FXML
 	Button right;
 	@FXML
-	Button back;
-	@FXML
 	Button addTag;
 	@FXML
 	Button deleteTag;
