@@ -11,10 +11,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.Album;
 import model.User;
@@ -55,13 +59,15 @@ public class userController {
 
 	private ObservableList<User> usersList;
 
-	public void start(int loggedUserIndex, String userName) throws ClassNotFoundException, IOException {
+	public void start(int loggedUserIndex, String userName)
+			throws ClassNotFoundException, IOException {
 
 		selectedUserIndex = loggedUserIndex;
 
 		usersList = User.readApp();
 
-		albums = FXCollections.observableList(usersList.get(loggedUserIndex).getAlbums());
+		albums = FXCollections
+				.observableList(usersList.get(loggedUserIndex).getAlbums());
 
 		albumList.setItems(albums);
 
@@ -78,7 +84,8 @@ public class userController {
 			}
 		});
 
-		albumList.getSelectionModel().selectedIndexProperty().addListener((obs) -> showItemInputDialog());
+		albumList.getSelectionModel().selectedIndexProperty()
+				.addListener((obs) -> showItemInputDialog());
 
 		userNameLabel.setText(userName);
 	}
@@ -96,25 +103,45 @@ public class userController {
 
 	}
 
-	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
+	public void listClick(MouseEvent click)
+			throws ClassNotFoundException, IOException {
+		int index = albumList.getSelectionModel().getSelectedIndex();
+		if (click.getClickCount() == 2) {
+			if (index != -1) {
+				openAlbum.fire();
+			}
+		}
+	}
 
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
+	public void buttonClick(ActionEvent e)
+			throws IOException, ClassNotFoundException {
+
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-		albumLoader = new FXMLLoader(getClass().getResource("/view/albumView.fxml"));
+		albumLoader = new FXMLLoader(
+				getClass().getResource("/view/albumView.fxml"));
 		albumParent = (Parent) albumLoader.load();
 		Scene albumScene = new Scene(albumParent);
 		albumScene.getRoot().setStyle("-fx-font-family: 'serif'");
 		albumController albumController = albumLoader.getController();
 
-		searchLoader = new FXMLLoader(getClass().getResource("/view/searchView.fxml"));
+		searchLoader = new FXMLLoader(
+				getClass().getResource("/view/searchView.fxml"));
 		searchParent = (Parent) searchLoader.load();
 		searchController searchController = searchLoader.getController();
 		Scene searchScene = new Scene(searchParent);
 		searchScene.getRoot().setStyle("-fx-font-family: 'serif'");
 		Button b = (Button) e.getSource();
+
+		Dialog<ButtonType> errorDialog = new Dialog<>();
+		DialogPane errorDialogPane = errorDialog.getDialogPane();
+		errorDialogPane.getButtonTypes().addAll(ButtonType.OK);
+
+		boolean alreadyExist = false;
 
 		int index = albumList.getSelectionModel().getSelectedIndex();
 
@@ -123,17 +150,35 @@ public class userController {
 		}
 
 		if (b == addAlbum) {
+			if (albumName.getText().trim().equals("")) {
+				errorDialog.setTitle("Empty Album Name");
+				errorDialog.setHeaderText("Please enter a valid Album Name");
+				errorDialog.show();
+			} else {
 
-			Album newAlbum = new Album(albumName.getText());
+				for (int i = 0; i < usersList.get(selectedUserIndex).getAlbums()
+						.size(); i++) {
+					if (usersList.get(selectedUserIndex).getAlbums().get(i)
+							.getName().equals(albumName.getText().trim())) {
+						alreadyExist = true;
+					}
+				}
 
-			// selectedUser.addAlbum(albumName.getText());
+				if (alreadyExist) {
+					errorDialog.setTitle("Album Name already exists");
+					errorDialog.setHeaderText("Please enter a different name");
+					errorDialog.show();
+				} else {
+					Album newAlbum = new Album(albumName.getText());
+					usersList.get(selectedUserIndex).addAlbum(newAlbum);
+					albumName.setText("");
+					User.writeApp(usersList);
+					albums = FXCollections.observableList(
+							usersList.get(selectedUserIndex).getAlbums());
+					albumList.setItems(albums);
+				}
 
-			usersList.get(selectedUserIndex).addAlbum(newAlbum);
-			albumName.setText("");
-			User.writeApp(usersList);
-
-			albums = FXCollections.observableList(usersList.get(selectedUserIndex).getAlbums());
-			albumList.setItems(albums);
+			}
 
 		}
 
@@ -141,25 +186,61 @@ public class userController {
 			stage.setScene(root);
 		}
 		if (b == openAlbum) {
-			albumController.start(selectedUserIndex, index);
-			stage.setScene(albumScene);
+			if (index == -1) {
+				errorDialog.setTitle("Nothing is Selected");
+				errorDialog.setHeaderText("Please Select Something to open");
+				errorDialog.show();
+			} else {
+				albumController.start(selectedUserIndex, index);
+				stage.setScene(albumScene);
+			}
 		}
 		if (b == deleteAlbum) {
-			usersList.get(selectedUserIndex).getAlbums().remove(index);
-			albumList.refresh();
-			User.writeApp(usersList);
-			albumName.setText("");
+			if (index == -1) {
+				errorDialog.setTitle("Nothing is Selected");
+				errorDialog.setHeaderText("Please Select Something to delete");
+				errorDialog.show();
+			} else {
+				usersList.get(selectedUserIndex).getAlbums().remove(index);
+				albumList.refresh();
+				User.writeApp(usersList);
+				albumName.setText("");
+			}
+
 		}
 		if (b == editAlbum) {
+			if (index == -1) {
+				errorDialog.setTitle("Nothing is Selected");
+				errorDialog.setHeaderText("Please Select Something to edit");
+				errorDialog.show();
+			} else if (albumName.getText().trim().equals("")) {
+				errorDialog.setTitle("Empty Album Name");
+				errorDialog.setHeaderText("Please enter a valid Album Name");
+				errorDialog.show();
+			} else {
 
-			usersList.get(selectedUserIndex).getAlbums().get(index).setName(albumName.getText());
+				for (int i = 0; i < usersList.get(selectedUserIndex).getAlbums()
+						.size(); i++) {
+					if (usersList.get(selectedUserIndex).getAlbums().get(i)
+							.getName().equals(albumName.getText().trim())) {
+						alreadyExist = true;
+					}
+				}
 
-			albums = FXCollections.observableList(usersList.get(selectedUserIndex).getAlbums());
-			albumList.setItems(albums);
-
-			albumName.setText("");
-
-			User.writeApp(usersList);
+				if (alreadyExist) {
+					errorDialog.setTitle("Album Name already exists");
+					errorDialog.setHeaderText("Please enter a different name");
+					errorDialog.show();
+				} else {
+					usersList.get(selectedUserIndex).getAlbums().get(index)
+							.setName(albumName.getText());
+					albums = FXCollections.observableList(
+							usersList.get(selectedUserIndex).getAlbums());
+					albumList.setItems(albums);
+					albumName.setText("");
+					User.writeApp(usersList);
+				}
+			}
 
 		}
 		if (b == search) {

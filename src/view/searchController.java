@@ -208,6 +208,10 @@ public class searchController {
 		userController usercontroller = userLoader.getController();
 		String username = users.get(userNumber).getName();
 
+		Dialog<ButtonType> errorDialog = new Dialog<>();
+		DialogPane errorDialogPane = errorDialog.getDialogPane();
+		errorDialogPane.getButtonTypes().addAll(ButtonType.OK);
+
 		if (b == close) {
 			stage.close();
 		}
@@ -274,17 +278,24 @@ public class searchController {
 					});
 		}
 		if (b == addToAlbum) {
-			Optional<ButtonType> result = dialog.showAndWait();
-			if (result.isPresent() && result.get() == ButtonType.OK) {
-				int albumLength = users.get(userNumber).getAlbums().size();
-				users.get(userNumber).addAlbum(new Album(albumName.getText()));
-				for (int i = 0; i < searchedImages.size(); i++) {
-					Photo temp = searchedImages.get(i);
-					users.get(userNumber).getAlbums().get(albumLength)
-							.addPhoto(temp);
+			if (searchedImages.size() == 0) {
+				errorDialog.setTitle("Empty Search Result");
+				errorDialog.setHeaderText("Empty Search Result");
+				errorDialog.show();
+			} else {
+				Optional<ButtonType> result = dialog.showAndWait();
+				if (result.isPresent() && result.get() == ButtonType.OK) {
+					int albumLength = users.get(userNumber).getAlbums().size();
+					users.get(userNumber)
+							.addAlbum(new Album(albumName.getText()));
+					for (int i = 0; i < searchedImages.size(); i++) {
+						Photo temp = searchedImages.get(i);
+						users.get(userNumber).getAlbums().get(albumLength)
+								.addPhoto(temp);
+					}
 				}
+				User.writeApp(users);
 			}
-			User.writeApp(users);
 		}
 		if (b == tagSearch) {
 			dialogGrid.setVisible(true);

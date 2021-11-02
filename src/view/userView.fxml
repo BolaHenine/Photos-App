@@ -22,7 +22,7 @@
             <Font name="Arial" size="15.0" />
          </font>
       </Label>
-      <ListView fx:id="albumList" layoutX="36.0" layoutY="106.0" prefHeight="189.0" prefWidth="544.0" />
+      <ListView onMouseClicked="#listClick" fx:id="albumList" layoutX="36.0" layoutY="106.0" prefHeight="189.0" prefWidth="544.0" />
       <Button fx:id="editAlbum" layoutX="438.0" layoutY="306.0" mnemonicParsing="false" text="Edit Album Name" onAction="#buttonClick" />
       <Button fx:id="openAlbum" layoutX="42.0" layoutY="344.0" mnemonicParsing="false" text="Open Album" onAction="#buttonClick" />
       <Button fx:id="search" layoutX="272.0" layoutY="51.0" mnemonicParsing="false" text="Search" onAction="#buttonClick" />

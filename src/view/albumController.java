@@ -25,6 +25,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -85,7 +86,8 @@ public class albumController {
 
 	private ArrayList<Album> allAlbums = new ArrayList<Album>();
 
-	public void start(int userNumber, int albumNumber) throws ClassNotFoundException, IOException {
+	public void start(int userNumber, int albumNumber)
+			throws ClassNotFoundException, IOException {
 
 		userIndex = userNumber;
 
@@ -97,39 +99,55 @@ public class albumController {
 
 		selectedAlbum = users.get(userNumber).getAlbums().get(albumNumber);
 
-		albumName.setText(users.get(userNumber).getAlbums().get(albumNumber).getName());
+		albumName.setText(
+				users.get(userNumber).getAlbums().get(albumNumber).getName());
 
 		images = selectedAlbum.getPhotos();
 
-		imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
+		imageList.setItems(
+				FXCollections.observableArrayList(selectedAlbum.getPhotos()));
 
-		imageList.setCellFactory(new Callback<ListView<Photo>, ListCell<Photo>>() {
-			@Override
-			public ListCell<Photo> call(ListView<Photo> arg0) {
-				ListCell<Photo> cell = new ListCell<Photo>() {
+		imageList.setCellFactory(
+				new Callback<ListView<Photo>, ListCell<Photo>>() {
 					@Override
-					protected void updateItem(Photo photo, boolean bt1) {
-						super.updateItem(photo, bt1);
-						if (photo != null) {
-							Image img = images.get(getIndex()).getImage();
-							ImageView imgview = new ImageView(img);
-							imgview.setFitWidth(50);
-							imgview.setFitHeight(50);
-							setGraphic(imgview);
-							setText(images.get(getIndex()).getName());
-						} else {
-							setGraphic(null);
-							setText("");
-						}
-					}
-				};
-				return cell;
-			};
+					public ListCell<Photo> call(ListView<Photo> arg0) {
+						ListCell<Photo> cell = new ListCell<Photo>() {
+							@Override
+							protected void updateItem(Photo photo,
+									boolean bt1) {
+								super.updateItem(photo, bt1);
+								if (photo != null) {
+									Image img = images.get(getIndex())
+											.getImage();
+									ImageView imgview = new ImageView(img);
+									imgview.setFitWidth(50);
+									imgview.setFitHeight(50);
+									setGraphic(imgview);
+									setText(images.get(getIndex()).getName());
+								} else {
+									setGraphic(null);
+									setText("");
+								}
+							}
+						};
+						return cell;
+					};
 
-		});
+				});
 
-		imageList.getSelectionModel().selectedIndexProperty().addListener((obs) -> showItemInputDialog());
+		imageList.getSelectionModel().selectedIndexProperty()
+				.addListener((obs) -> showItemInputDialog());
 
+	}
+
+	public void listClick(MouseEvent click)
+			throws ClassNotFoundException, IOException {
+		int index = imageList.getSelectionModel().getSelectedIndex();
+		if (click.getClickCount() == 2) {
+			if (index != -1) {
+				openPhoto.fire();
+			}
+		}
 	}
 
 	private void showItemInputDialog() {
@@ -143,19 +161,22 @@ public class albumController {
 
 	}
 
-	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
+	public void buttonClick(ActionEvent e)
+			throws IOException, ClassNotFoundException {
 		loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-		photoLoader = new FXMLLoader(getClass().getResource("/view/photoView.fxml"));
+		photoLoader = new FXMLLoader(
+				getClass().getResource("/view/photoView.fxml"));
 		photoParent = (Parent) photoLoader.load();
 		Scene photoScene = new Scene(photoParent);
 		photoScene.getRoot().setStyle("-fx-font-family: 'serif'");
 		photoController photoController = photoLoader.getController();
 
-		userLoader = new FXMLLoader(getClass().getResource("/view/userView.fxml"));
+		userLoader = new FXMLLoader(
+				getClass().getResource("/view/userView.fxml"));
 		userParent = (Parent) userLoader.load();
 		Scene userScene = new Scene(userParent);
 		userScene.getRoot().setStyle("-fx-font-family: 'serif'");
@@ -166,6 +187,10 @@ public class albumController {
 
 		Photo selectedPhoto = imageList.getSelectionModel().getSelectedItem();
 		int index = imageList.getSelectionModel().getSelectedIndex();
+
+		Dialog<ButtonType> dialog = new Dialog<>();
+		DialogPane dialogPane = dialog.getDialogPane();
+		dialogPane.getButtonTypes().addAll(ButtonType.OK);
 
 		if (b == logout) {
 			stage.setScene(root);
@@ -182,88 +207,132 @@ public class albumController {
 			stage.setScene(userScene);
 		}
 		if (b == openPhoto) {
-			photoController.start(userIndex, albumIndex, index);
-			stage.setScene(photoScene);
+			if (index == -1) {
+				dialog.setTitle("Nothing is Selected");
+				dialog.setHeaderText("Please Select Something to open");
+				dialog.show();
+			} else {
+				photoController.start(userIndex, albumIndex, index);
+				stage.setScene(photoScene);
+			}
+
 		}
 		if (b == addPhoto) {
 
 			FileChooser chooser = new FileChooser();
 			chooser.setTitle("Choose Image");
-			chooser.getExtensionFilters()
-					.addAll(new ExtensionFilter("Image Files", "*.bmp", "*.BMP", "*.gif", "*.GIF", "*.jpg", "*.JPG",
-							"*.png", "*.PNG"), new ExtensionFilter("Bitmap Files", "*.bmp", "*.BMP"),
-							new ExtensionFilter("GIF Files", "*.gif", "*.GIF"),
-							new ExtensionFilter("JPEG Files", "*.jpg", "*.JPG"),
-							new ExtensionFilter("PNG Files", "*.png", "*.PNG"));
+			chooser.getExtensionFilters().addAll(
+					new ExtensionFilter("Image Files", "*.bmp", "*.BMP",
+							"*.gif", "*.GIF", "*.jpg", "*.JPG", "*.png",
+							"*.PNG"),
+					new ExtensionFilter("Bitmap Files", "*.bmp", "*.BMP"),
+					new ExtensionFilter("GIF Files", "*.gif", "*.GIF"),
+					new ExtensionFilter("JPEG Files", "*.jpg", "*.JPG"),
+					new ExtensionFilter("PNG Files", "*.png", "*.PNG"));
 			File selectedFile = chooser.showOpenDialog(stage);
 			if (selectedFile != null) {
 				Image image = new Image(selectedFile.toURI().toString());
-				Photo newPhoto = new Photo(selectedFile.getName(), image, calendar, captionName.getText());
+				Photo newPhoto = new Photo(selectedFile.getName(), image,
+						calendar, captionName.getText());
 				selectedAlbum.addPhoto(newPhoto);
 				User.writeApp(users);
-				imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
+				imageList.setItems(FXCollections
+						.observableArrayList(selectedAlbum.getPhotos()));
 			}
 
 		}
 
 		if (b == deletePhoto) {
-			imageList.getItems().remove(index);
-			images.remove(index);
-			User.writeApp(users);
+			if (index == -1) {
+				dialog.setTitle("Nothing is Selected");
+				dialog.setHeaderText("Please Select Something to delete");
+				dialog.show();
+			} else {
+				imageList.getItems().remove(index);
+				images.remove(index);
+				User.writeApp(users);
+			}
+
 		}
 
 		if (b == editName) {
-			selectedAlbum.getPhotos().get(index).setName(photoName.getText(), calendar);
-			User.writeApp(users);
-			imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
+			if (index == -1) {
+				dialog.setTitle("Nothing is Selected");
+				dialog.setHeaderText("Please Select Something to edit");
+				dialog.show();
+			} else if (photoName.getText().trim().equals("")) {
+				dialog.setTitle("Empty Photo Name");
+				dialog.setHeaderText("Please enter a valid Photo Name");
+				dialog.show();
+			} else {
+				selectedAlbum.getPhotos().get(index)
+						.setName(photoName.getText(), calendar);
+				User.writeApp(users);
+				imageList.setItems(FXCollections
+						.observableArrayList(selectedAlbum.getPhotos()));
+			}
+
 		}
 
 		if (b == recaption) {
-			selectedAlbum.getPhotos().get(index).recaption(captionName.getText(), calendar);
-			User.writeApp(users);
+			if (captionName.getText().trim().equals("")) {
+				dialog.setTitle("Empty Caption Name");
+				dialog.setHeaderText("Please enter a valid Caption Name");
+				dialog.show();
+			} else {
+				selectedAlbum.getPhotos().get(index)
+						.recaption(captionName.getText(), calendar);
+				User.writeApp(users);
+			}
 		}
 
 		if (b == move) {
-			Album albumMoveto = null;
-
-			String week_days[] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
-
-			ArrayList<String> albums = new ArrayList<String>();
-
-			for (int i = 0; i < allAlbums.size(); i++) {
-				if (allAlbums.get(i) != allAlbums.get(albumIndex)) {
-					albums.add(allAlbums.get(i).getName());
-				}
-			}
-
-			ComboBox combo_box = new ComboBox(FXCollections.observableArrayList(albums));
-
-			combo_box.setPromptText("Please select the Album to move it to");
-
-			Dialog<ButtonType> dialog = new Dialog<>();
-			dialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
-			dialog.setTitle("Confirmation required");
-			dialog.setHeaderText("Are you sure you want to delete the song");
-			DialogPane dialogPane = dialog.getDialogPane();
-			dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-
-			dialog.getDialogPane().setContent(combo_box);
-
-			Optional<ButtonType> result = dialog.showAndWait();
-			if (result.isPresent() && result.get() == ButtonType.OK) {
-
+			if (index == -1) {
+				dialog.setTitle("Nothing is Selected");
+				dialog.setHeaderText("Please Select Something to move");
+				dialog.show();
+			} else {
+				Album albumMoveto = null;
+				String week_days[] = {"Monday", "Tuesday", "Wednesday",
+						"Thursday", "Friday"};
+				ArrayList<String> albums = new ArrayList<String>();
 				for (int i = 0; i < allAlbums.size(); i++) {
-					if (allAlbums.get(i).getName().equals(combo_box.getValue())) {
-						albumMoveto = allAlbums.get(i);
+					if (allAlbums.get(i) != allAlbums.get(albumIndex)) {
+						albums.add(allAlbums.get(i).getName());
 					}
 				}
-				albumMoveto.addPhoto(selectedPhoto);
-				selectedAlbum.removePhoto(selectedPhoto);
+				ComboBox combo_box = new ComboBox(
+						FXCollections.observableArrayList(albums));
 
+				combo_box
+						.setPromptText("Please select the Album to move it to");
+
+				Dialog<ButtonType> dialog1 = new Dialog<>();
+				dialog1.getDialogPane().setStyle("-fx-font-family: 'serif'");
+				dialog1.setTitle("Select an Album");
+				dialog1.setHeaderText("Select an Albumg");
+				DialogPane dialogPane1 = dialog1.getDialogPane();
+				dialogPane1.getButtonTypes().addAll(ButtonType.OK,
+						ButtonType.CANCEL);
+				dialog1.getDialogPane().setContent(combo_box);
+				Optional<ButtonType> result = dialog1.showAndWait();
+				if (result.isPresent() && result.get() == ButtonType.OK) {
+
+					for (int i = 0; i < allAlbums.size(); i++) {
+						if (allAlbums.get(i).getName()
+								.equals(combo_box.getValue())) {
+							albumMoveto = allAlbums.get(i);
+						}
+					}
+					albumMoveto.addPhoto(selectedPhoto);
+					selectedAlbum.removePhoto(selectedPhoto);
+
+				}
+				User.writeApp(users);
+				imageList.setItems(FXCollections
+						.observableArrayList(selectedAlbum.getPhotos()));
 			}
 
-			User.writeApp(users);
-			imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
 		}
 
 	}
