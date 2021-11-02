@@ -24,14 +24,15 @@
          </font>
       </Label>
       <ListView fx:id="imageList" layoutX="28.0" layoutY="86.0" prefHeight="189.0" prefWidth="544.0" />
-      <Button fx:id="editName" layoutX="17.0" layoutY="433.0" mnemonicParsing="false" text="Edit Photo Name" onAction="#buttonClick" />
-      <Button fx:id="openPhoto" layoutX="29.0" layoutY="355.0" mnemonicParsing="false" text="Open Photo" onAction="#buttonClick" />
-      <Button fx:id="deletePhoto" layoutX="27.0" layoutY="395.0" mnemonicParsing="false" text="Delete Photo" onAction="#buttonClick" />
-      <Button fx:id="addPhoto" layoutX="33.0" layoutY="317.0" mnemonicParsing="false" text="Add Photo" onAction="#buttonClick" />
+      <Button fx:id="editName" layoutX="17.0" layoutY="428.0" mnemonicParsing="false" text="Edit Photo Name" onAction="#buttonClick" />
+      <Button fx:id="openPhoto" layoutX="29.0" layoutY="342.0" mnemonicParsing="false" text="Open Photo" onAction="#buttonClick" />
+      <Button fx:id="deletePhoto" layoutX="27.0" layoutY="385.0" mnemonicParsing="false" text="Delete Photo" onAction="#buttonClick" />
+      <Button fx:id="addPhoto" layoutX="33.0" layoutY="299.0" mnemonicParsing="false" text="Add Photo" onAction="#buttonClick" />
       <TextField fx:id = "photoName" layoutX="139.0" layoutY="342.0" promptText="Photo Name:" />
       <TextField fx:id = "captionName" layoutX="419.0" layoutY="342.0" promptText="Caption:" />
       <Button fx:id="recaption" layoutX="331.0" layoutY="359.0" mnemonicParsing="false" text="Recaption" onAction="#buttonClick" />
       <Button fx:id="caption" layoutX="337.0" layoutY="317.0" mnemonicParsing="false" text="Caption" onAction="#buttonClick" />
-      <Button fx:id="move" layoutX="47.0" layoutY="283.0" mnemonicParsing="false" text="Move" onAction="#buttonClick" />
+      <Button fx:id="move" layoutX="239.0" layoutY="379.0" mnemonicParsing="false" text="Move" onAction="#buttonClick" />
+      <Button fx:id="copy" layoutX="145.0" layoutY="379.0" mnemonicParsing="false" text="Copy" onAction="#buttonClick" />
    </children>
 </AnchorPane>

@@ -55,6 +55,8 @@ public class albumController {
 	@FXML
 	Button move;
 	@FXML
+	Button copy;
+	@FXML
 	Label albumName;
 	@FXML
 	TextField photoName;
@@ -226,8 +228,6 @@ public class albumController {
 		if (b == move) {
 			Album albumMoveto = null;
 
-			String week_days[] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
-
 			ArrayList<String> albums = new ArrayList<String>();
 
 			for (int i = 0; i < allAlbums.size(); i++) {
@@ -238,7 +238,7 @@ public class albumController {
 
 			ComboBox combo_box = new ComboBox(FXCollections.observableArrayList(albums));
 
-			combo_box.setPromptText("Please select the Album to move it to");
+			combo_box.setPromptText("Please Select the Album to Move It To");
 
 			Dialog<ButtonType> dialog = new Dialog<>();
 			dialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
@@ -265,7 +265,44 @@ public class albumController {
 			User.writeApp(users);
 			imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
 		}
+		if (b == copy) {
+			Album albumCopyto = null;
 
+			ArrayList<String> albums1 = new ArrayList<String>();
+
+			for (int i = 0; i < allAlbums.size(); i++) {
+				if (allAlbums.get(i) != allAlbums.get(albumIndex)) {
+					albums1.add(allAlbums.get(i).getName());
+				}
+			}
+
+			ComboBox combo_box = new ComboBox(FXCollections.observableArrayList(albums1));
+
+			combo_box.setPromptText("Please Select the Album to Copy the Photo To");
+
+			Dialog<ButtonType> dialog = new Dialog<>();
+			dialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
+			dialog.setTitle("Confirmation required");
+			DialogPane dialogPane = dialog.getDialogPane();
+			dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+			dialog.getDialogPane().setContent(combo_box);
+
+			Optional<ButtonType> result = dialog.showAndWait();
+			if (result.isPresent() && result.get() == ButtonType.OK) {
+
+				for (int i = 0; i < allAlbums.size(); i++) {
+					if (allAlbums.get(i).getName().equals(combo_box.getValue())) {
+						albumCopyto = allAlbums.get(i);
+					}
+				}
+				albumCopyto.addPhoto(selectedPhoto);
+
+			}
+
+			User.writeApp(users);
+			imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
+		}
 	}
 
 }
