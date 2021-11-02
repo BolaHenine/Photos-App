@@ -287,17 +287,7 @@ public class albumController {
 				User.writeApp(users);
 			}
 		}
-
 		if (b == move) {
-			if (index == -1) {
-				dialog.setTitle("Nothing is Selected");
-				dialog.setHeaderText("Please Select Something to move");
-				dialog.show();
-			} else {
-				Album albumMoveto = null;
-				String week_days[] = {"Monday", "Tuesday", "Wednesday",
-						"Thursday", "Friday"};
-				ArrayList<String> albums = new ArrayList<String>();
 			Album albumMoveto = null;
 
 			ArrayList<String> albums = new ArrayList<String>();
@@ -308,59 +298,39 @@ public class albumController {
 				}
 			}
 
-			ComboBox combo_box = new ComboBox(FXCollections.observableArrayList(albums));
+			ComboBox combo_box = new ComboBox(
+					FXCollections.observableArrayList(albums));
 
 			combo_box.setPromptText("Please Select the Album to Move It To");
 
-			Dialog<ButtonType> dialog = new Dialog<>();
-			dialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
-			dialog.setTitle("Confirmation required");
-			dialog.setHeaderText("Are you sure you want to delete the song");
-			DialogPane dialogPane = dialog.getDialogPane();
-			dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+			Dialog<ButtonType> moveDialog = new Dialog<>();
+			moveDialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
+			moveDialog.setTitle("Confirmation required");
+			moveDialog
+					.setHeaderText("Are you sure you want to delete the song");
+			DialogPane moveDialogPane = moveDialog.getDialogPane();
+			moveDialogPane.getButtonTypes().addAll(ButtonType.OK,
+					ButtonType.CANCEL);
 
-			dialog.getDialogPane().setContent(combo_box);
+			moveDialog.getDialogPane().setContent(combo_box);
 
-			Optional<ButtonType> result = dialog.showAndWait();
+			Optional<ButtonType> result = moveDialog.showAndWait();
 			if (result.isPresent() && result.get() == ButtonType.OK) {
 
 				for (int i = 0; i < allAlbums.size(); i++) {
-					if (allAlbums.get(i) != allAlbums.get(albumIndex)) {
-						albums.add(allAlbums.get(i).getName());
+					if (allAlbums.get(i).getName()
+							.equals(combo_box.getValue())) {
+						albumMoveto = allAlbums.get(i);
 					}
 				}
-				ComboBox combo_box = new ComboBox(
-						FXCollections.observableArrayList(albums));
+				albumMoveto.addPhoto(selectedPhoto);
+				selectedAlbum.removePhoto(selectedPhoto);
 
-				combo_box
-						.setPromptText("Please select the Album to move it to");
-
-				Dialog<ButtonType> dialog1 = new Dialog<>();
-				dialog1.getDialogPane().setStyle("-fx-font-family: 'serif'");
-				dialog1.setTitle("Select an Album");
-				dialog1.setHeaderText("Select an Albumg");
-				DialogPane dialogPane1 = dialog1.getDialogPane();
-				dialogPane1.getButtonTypes().addAll(ButtonType.OK,
-						ButtonType.CANCEL);
-				dialog1.getDialogPane().setContent(combo_box);
-				Optional<ButtonType> result = dialog1.showAndWait();
-				if (result.isPresent() && result.get() == ButtonType.OK) {
-
-					for (int i = 0; i < allAlbums.size(); i++) {
-						if (allAlbums.get(i).getName()
-								.equals(combo_box.getValue())) {
-							albumMoveto = allAlbums.get(i);
-						}
-					}
-					albumMoveto.addPhoto(selectedPhoto);
-					selectedAlbum.removePhoto(selectedPhoto);
-
-				}
-				User.writeApp(users);
-				imageList.setItems(FXCollections
-						.observableArrayList(selectedAlbum.getPhotos()));
 			}
 
+			User.writeApp(users);
+			imageList.setItems(FXCollections
+					.observableArrayList(selectedAlbum.getPhotos()));
 		}
 		if (b == copy) {
 			Album albumCopyto = null;
@@ -373,15 +343,18 @@ public class albumController {
 				}
 			}
 
-			ComboBox combo_box = new ComboBox(FXCollections.observableArrayList(albums1));
+			ComboBox combo_box = new ComboBox(
+					FXCollections.observableArrayList(albums1));
 
-			combo_box.setPromptText("Please Select the Album to Copy the Photo To");
+			combo_box.setPromptText(
+					"Please Select the Album to Copy the Photo To");
 
 			Dialog<ButtonType> dialog = new Dialog<>();
 			dialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
 			dialog.setTitle("Confirmation required");
 			DialogPane dialogPane = dialog.getDialogPane();
-			dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+			dialogPane.getButtonTypes().addAll(ButtonType.OK,
+					ButtonType.CANCEL);
 
 			dialog.getDialogPane().setContent(combo_box);
 
@@ -389,7 +362,8 @@ public class albumController {
 			if (result.isPresent() && result.get() == ButtonType.OK) {
 
 				for (int i = 0; i < allAlbums.size(); i++) {
-					if (allAlbums.get(i).getName().equals(combo_box.getValue())) {
+					if (allAlbums.get(i).getName()
+							.equals(combo_box.getValue())) {
 						albumCopyto = allAlbums.get(i);
 					}
 				}
@@ -398,7 +372,8 @@ public class albumController {
 			}
 
 			User.writeApp(users);
-			imageList.setItems(FXCollections.observableArrayList(selectedAlbum.getPhotos()));
+			imageList.setItems(FXCollections
+					.observableArrayList(selectedAlbum.getPhotos()));
 		}
 	}
 
