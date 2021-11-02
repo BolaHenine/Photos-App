@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class Album implements java.io.Serializable {
+public class Album implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1891567810783724951L;
 	private String name;
@@ -14,10 +14,6 @@ public class Album implements java.io.Serializable {
 	}
 
 	public String getName() {
-		return this.name;
-	}
-
-	public String getNamess() {
 		return this.name;
 	}
 

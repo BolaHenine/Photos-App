@@ -18,49 +18,13 @@ public class mainDriver extends Application {
 		primaryStage.setTitle("Photos");
 		primaryStage.setResizable(false);
 		primaryStage.show();
-		//
-		// FXMLLoader loader = new FXMLLoader();
-		// loader.setLocation(getClass().getResource("/view/adminView.fxml"));
-		// AnchorPane root = (AnchorPane) loader.load();
-		// adminController adminController = loader.getController();
-		// adminController.start();
-		// Scene scene = new Scene(root);
-		// primaryStage.setScene(scene);
-		// primaryStage.setResizable(false);
-		// primaryStage.show();
-
-		// FXMLLoader loader = new FXMLLoader();
-		// loader.setLocation(getClass().getResource("/view/userView.fxml"));
-		// AnchorPane root = (AnchorPane) loader.load();
-		// userController userController = loader.getController();
-		//
-		// userController.start(Bola, username);
-		//
-		// Scene scene = new Scene(root);
-		// primaryStage.setScene(scene);
-		// primaryStage.setResizable(false);
-		// primaryStage.show();
-
-		// FXMLLoader loader = new FXMLLoader();
-		// loader.setLocation(getClass().getResource("/view/albumView.fxml"));
-		// AnchorPane root = (AnchorPane) loader.load();
-		//
-		// albumController albumController = loader.getController();
-		//
-		// // albumController.start();
-		//
-		// Scene scene = new Scene(root);
-		// primaryStage.setScene(scene);
-		// primaryStage.setResizable(false);
-		// primaryStage.show();
 
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws CloneNotSupportedException {
 		// TODO Auto-generated method stub
 
 		launch(args);
-
 	}
 
 }
