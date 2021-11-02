@@ -15,6 +15,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -191,12 +194,24 @@ public class photoController {
 			stage.close();
 		}
 		if (b == addTag) {
-			photo.addTag(tagName.getText(), tagValue.getText());
-			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
-			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
-			User.writeApp(users);
-			tagName.clear();
-			tagValue.clear();
+			if (tagName.getText().isBlank() && tagValue.getText().isBlank()) {
+				Dialog<ButtonType> dialog = new Dialog<>();
+				dialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
+				dialog.setTitle("Error");
+				dialog.setHeaderText("Tag Name and Tag Value are empty. Please enter a valid Tag Name and Tag Value.");
+				DialogPane dialogPane = dialog.getDialogPane();
+				dialogPane.getButtonTypes().addAll(ButtonType.OK);
+				dialog.show();
+				tagName.clear();
+				tagValue.clear();
+			} else {
+				photo.addTag(tagName.getText(), tagValue.getText());
+				ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
+				tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
+				User.writeApp(users);
+				tagName.clear();
+				tagValue.clear();
+			}
 		}
 	}
 
