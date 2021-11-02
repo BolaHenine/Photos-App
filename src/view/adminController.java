@@ -10,6 +10,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -56,14 +59,20 @@ public class adminController {
 
 	}
 
-	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
+	public void buttonClick(ActionEvent e)
+			throws IOException, ClassNotFoundException {
 
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
 		Button b = (Button) e.getSource();
+
+		Dialog<ButtonType> dialog = new Dialog<>();
+		DialogPane dialogPane = dialog.getDialogPane();
+		dialogPane.getButtonTypes().addAll(ButtonType.OK);
 
 		int index = usersList.getSelectionModel().getSelectedIndex();
 
@@ -77,6 +86,12 @@ public class adminController {
 
 		}
 		if (b == add) {
+
+			if (username.getText().trim().equals("")) {
+				dialog.setTitle("Empty Username");
+				dialog.setHeaderText("Please enter a valid Username");
+				dialog.show();
+			}
 			User newUser = new User(username.getText());
 
 			users.add(newUser);
@@ -87,7 +102,9 @@ public class adminController {
 		}
 		if (b == delete) {
 			if (index == -1) {
-				System.out.println("nothing is selected");
+				dialog.setTitle("Nothing is Selected");
+				dialog.setHeaderText("Please Select Something to delete");
+				dialog.show();
 			} else {
 				users.remove(index);
 				User.writeApp(users);

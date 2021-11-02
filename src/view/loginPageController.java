@@ -10,7 +10,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import model.User;
 
@@ -21,6 +24,8 @@ public class loginPageController {
 	Button close;
 	@FXML
 	TextField username;
+	@FXML
+	Label invalidUserName;
 
 	FXMLLoader loader;
 	Parent parent;
@@ -32,11 +37,17 @@ public class loginPageController {
 
 	private int loggedUserIndex;
 
+	public void enterClicked(KeyEvent ke) {
+		if (ke.getCode().equals(KeyCode.ENTER)) {
+			login.fire();
+		}
+	}
+
 	public void buttonClick(ActionEvent e)
 			throws IOException, ClassNotFoundException {
 
 		boolean userFound = false;
-
+		invalidUserName.setVisible(false);
 		users = User.readApp();
 
 		loader = new FXMLLoader(getClass().getResource("/view/adminView.fxml"));
@@ -71,7 +82,7 @@ public class loginPageController {
 						users.get(loggedUserIndex).getName());
 				stage.setScene(userScene);
 			} else {
-				System.out.println("User not Found");
+				invalidUserName.setVisible(true);
 			}
 		}
 		if (b == close) {
