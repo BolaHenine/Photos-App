@@ -332,7 +332,49 @@ public class albumController {
 			imageList.setItems(FXCollections
 					.observableArrayList(selectedAlbum.getPhotos()));
 		}
+		if (b == copy) {
+			Album albumCopyto = null;
 
+			ArrayList<String> albums1 = new ArrayList<String>();
+
+			for (int i = 0; i < allAlbums.size(); i++) {
+				if (allAlbums.get(i) != allAlbums.get(albumIndex)) {
+					albums1.add(allAlbums.get(i).getName());
+				}
+			}
+
+			ComboBox combo_box = new ComboBox(
+					FXCollections.observableArrayList(albums1));
+
+			combo_box.setPromptText(
+					"Please Select the Album to Copy the Photo To");
+
+			Dialog<ButtonType> moveDialog = new Dialog<>();
+			moveDialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
+			moveDialog.setTitle("Confirmation required");
+			DialogPane moveDialogPane = moveDialog.getDialogPane();
+			moveDialogPane.getButtonTypes().addAll(ButtonType.OK,
+					ButtonType.CANCEL);
+
+			moveDialog.getDialogPane().setContent(combo_box);
+
+			Optional<ButtonType> result = moveDialog.showAndWait();
+			if (result.isPresent() && result.get() == ButtonType.OK) {
+
+				for (int i = 0; i < allAlbums.size(); i++) {
+					if (allAlbums.get(i).getName()
+							.equals(combo_box.getValue())) {
+						albumCopyto = allAlbums.get(i);
+					}
+				}
+				albumCopyto.addPhoto(selectedPhoto);
+
+			}
+
+			User.writeApp(users);
+			imageList.setItems(FXCollections
+					.observableArrayList(selectedAlbum.getPhotos()));
+		}
 	}
 
 }
