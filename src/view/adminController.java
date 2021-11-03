@@ -59,11 +59,9 @@ public class adminController {
 
 	}
 
-	public void buttonClick(ActionEvent e)
-			throws IOException, ClassNotFoundException {
+	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
 
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getResource("/view/loginPage.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -71,6 +69,7 @@ public class adminController {
 		Button b = (Button) e.getSource();
 
 		Dialog<ButtonType> dialog = new Dialog<>();
+		dialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
 		DialogPane dialogPane = dialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK);
 

@@ -92,8 +92,7 @@ public class searchController {
 	private Boolean conjunctiveSearch = false;
 	private Boolean disjunctiveSearch = false;
 
-	public void start(int userIndex)
-			throws ClassNotFoundException, IOException {
+	public void start(int userIndex) throws ClassNotFoundException, IOException {
 
 		dialogGrid.setVisible(false);
 		firstTagName.setVisible(false);
@@ -106,8 +105,7 @@ public class searchController {
 		secondTagValueLabel.setVisible(false);
 		secondTagNameLabel.setVisible(false);
 
-		String options[] = {"Single Tag Value Search",
-				"Conjunctive combination", "Disjunctive combination"};
+		String options[] = { "Single Tag Value Search", "Conjunctive combination", "Disjunctive combination" };
 
 		searchComboBox.setItems(FXCollections.observableArrayList(options));
 
@@ -143,8 +141,7 @@ public class searchController {
 			conjunctiveSearch = false;
 			disjunctiveSearch = false;
 
-		} else if (searchComboBox.getValue()
-				.equals("Conjunctive combination")) {
+		} else if (searchComboBox.getValue().equals("Conjunctive combination")) {
 			singleSearch = false;
 			conjunctiveSearch = true;
 			disjunctiveSearch = false;
@@ -175,8 +172,7 @@ public class searchController {
 		Button b = (Button) e.getSource();
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getResource("/view/loginPage.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		TextArea albumName = new TextArea();
@@ -185,6 +181,7 @@ public class searchController {
 		albumName.setPrefHeight(25);
 
 		Dialog<ButtonType> dialog = new Dialog<>();
+		dialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
 		dialog.setTitle("Enter Album Name");
 		DialogPane dialogPane = dialog.getDialogPane();
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -195,13 +192,11 @@ public class searchController {
 		tagSearchDialog.setTitle("Confirmation required");
 		tagSearchDialog.setHeaderText("Select Search Type");
 		DialogPane tagSearchDialogPane = tagSearchDialog.getDialogPane();
-		tagSearchDialogPane.getButtonTypes().addAll(ButtonType.OK,
-				ButtonType.CANCEL);
+		tagSearchDialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
 		tagSearchDialogPane.setContent(dialogGrid);
 
-		userLoader = new FXMLLoader(
-				getClass().getResource("/view/userView.fxml"));
+		userLoader = new FXMLLoader(getClass().getResource("/view/userView.fxml"));
 		userParent = (Parent) userLoader.load();
 		Scene userScene = new Scene(userParent);
 		userScene.getRoot().setStyle("-fx-font-family: 'serif'");
@@ -209,8 +204,19 @@ public class searchController {
 		String username = users.get(userNumber).getName();
 
 		Dialog<ButtonType> errorDialog = new Dialog<>();
+		errorDialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
 		DialogPane errorDialogPane = errorDialog.getDialogPane();
 		errorDialogPane.getButtonTypes().addAll(ButtonType.OK);
+
+		Dialog<ButtonType> dateDialog = new Dialog<>();
+		dateDialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
+		DialogPane dateDialogPane = dateDialog.getDialogPane();
+		dateDialogPane.getButtonTypes().addAll(ButtonType.OK);
+
+		Dialog<ButtonType> dateDialog1 = new Dialog<>();
+		dateDialog1.getDialogPane().setStyle("-fx-font-family: 'serif'");
+		DialogPane dateDialogPane1 = dateDialog1.getDialogPane();
+		dateDialogPane1.getButtonTypes().addAll(ButtonType.OK);
 
 		if (b == close) {
 			stage.close();
@@ -232,50 +238,57 @@ public class searchController {
 
 		}
 		if (b == search) {
+			fromDate.getEditor().setStyle("-fx-font-family: 'serif'");
+			toDate.getEditor().setStyle("-fx-font-family: 'serif'");
+
 			if (fromDate.getValue() != null && toDate.getValue() != null) {
 				searchedImages.clear();
 				for (int i = 0; i < allImages.size(); i++) {
 					LocalDateTime imageTime = allImages.get(i).getDate();
 					if (imageTime.isAfter(fromDate.getValue().atStartOfDay())
-							&& imageTime.isBefore(
-									toDate.getValue().atStartOfDay())) {
+							&& imageTime.isBefore(toDate.getValue().atStartOfDay())) {
 						searchedImages.add(allImages.get(i));
+					} else {
+						dateDialog.setTitle("No Search Results");
+						dateDialog.setHeaderText("Did not find any results for these days.");
+						dateDialog.show();
 					}
 				}
 
+			} else if (fromDate.getValue() == null && toDate.getValue() == null) {
+				dateDialog1.setTitle("Empty Dates");
+				dateDialog1.setHeaderText("Dates are empty");
+				dateDialog1.show();
+				fromDate.getEditor().clear();
+				toDate.getEditor().clear();
+
 			}
+			searchResults.setItems(FXCollections.observableArrayList(searchedImages));
 
-			searchResults.setItems(
-					FXCollections.observableArrayList(searchedImages));
-
-			searchResults.setCellFactory(
-					new Callback<ListView<Photo>, ListCell<Photo>>() {
+			searchResults.setCellFactory(new Callback<ListView<Photo>, ListCell<Photo>>() {
+				@Override
+				public ListCell<Photo> call(ListView<Photo> arg0) {
+					ListCell<Photo> cell = new ListCell<Photo>() {
 						@Override
-						public ListCell<Photo> call(ListView<Photo> arg0) {
-							ListCell<Photo> cell = new ListCell<Photo>() {
-								@Override
-								protected void updateItem(Photo photo,
-										boolean bt1) {
-									super.updateItem(photo, bt1);
-									if (photo != null) {
-										Image img = searchedImages
-												.get(getIndex()).getImage();
-										ImageView imgview = new ImageView(img);
-										imgview.setFitWidth(50);
-										imgview.setFitHeight(50);
-										setGraphic(imgview);
-										setText(searchedImages.get(getIndex())
-												.getName());
-									} else {
-										setGraphic(null);
-										setText("");
-									}
-								}
-							};
-							return cell;
-						};
+						protected void updateItem(Photo photo, boolean bt1) {
+							super.updateItem(photo, bt1);
+							if (photo != null) {
+								Image img = searchedImages.get(getIndex()).getImage();
+								ImageView imgview = new ImageView(img);
+								imgview.setFitWidth(50);
+								imgview.setFitHeight(50);
+								setGraphic(imgview);
+								setText(searchedImages.get(getIndex()).getName());
+							} else {
+								setGraphic(null);
+								setText("");
+							}
+						}
+					};
+					return cell;
+				};
 
-					});
+			});
 		}
 		if (b == addToAlbum) {
 			if (searchedImages.size() == 0) {
@@ -286,12 +299,10 @@ public class searchController {
 				Optional<ButtonType> result = dialog.showAndWait();
 				if (result.isPresent() && result.get() == ButtonType.OK) {
 					int albumLength = users.get(userNumber).getAlbums().size();
-					users.get(userNumber)
-							.addAlbum(new Album(albumName.getText()));
+					users.get(userNumber).addAlbum(new Album(albumName.getText()));
 					for (int i = 0; i < searchedImages.size(); i++) {
 						Photo temp = searchedImages.get(i);
-						users.get(userNumber).getAlbums().get(albumLength)
-								.addPhoto(temp);
+						users.get(userNumber).getAlbums().get(albumLength).addPhoto(temp);
 					}
 				}
 				User.writeApp(users);
@@ -302,20 +313,15 @@ public class searchController {
 			Optional<ButtonType> result = tagSearchDialog.showAndWait();
 			if (result.isPresent() && result.get() == ButtonType.OK) {
 				if (singleSearch) {
-					if (firstTagName.getText() != null
-							&& firstTagValue.getText() != null) {
+					if (firstTagName.getText() != null && firstTagValue.getText() != null) {
 						searchedImages.clear();
 						for (int i = 0; i < allImages.size(); i++) {
-							HashMap<String, List<String>> tagMap = allImages
-									.get(i).getTag();
+							HashMap<String, List<String>> tagMap = allImages.get(i).getTag();
 							for (int j = 0; j < tagMap.size(); j++) {
-								String key = (String) tagMap.keySet()
-										.toArray()[j];
+								String key = (String) tagMap.keySet().toArray()[j];
 								if (key.equals(firstTagName.getText())
-										&& tagMap.get(key).contains(
-												firstTagValue.getText())) {
-									if (!searchedImages
-											.contains(allImages.get(i))) {
+										&& tagMap.get(key).contains(firstTagValue.getText())) {
+									if (!searchedImages.contains(allImages.get(i))) {
 										searchedImages.add(allImages.get(i));
 									}
 								}
@@ -324,24 +330,17 @@ public class searchController {
 						}
 					}
 				} else if (disjunctiveSearch) {
-					if (firstTagName.getText() != null
-							&& firstTagValue.getText() != null) {
+					if (firstTagName.getText() != null && firstTagValue.getText() != null) {
 						searchedImages.clear();
 						for (int i = 0; i < allImages.size(); i++) {
-							HashMap<String, List<String>> tagMap = allImages
-									.get(i).getTag();
+							HashMap<String, List<String>> tagMap = allImages.get(i).getTag();
 							for (int j = 0; j < tagMap.size(); j++) {
-								String key = (String) tagMap.keySet()
-										.toArray()[j];
+								String key = (String) tagMap.keySet().toArray()[j];
 								if ((key.equals(firstTagName.getText())
-										&& tagMap.get(key).contains(
-												firstTagValue.getText()))
+										&& tagMap.get(key).contains(firstTagValue.getText()))
 										|| (key.equals(secondTagName.getText())
-												&& tagMap.get(key)
-														.contains(secondTagValue
-																.getText()))) {
-									if (!searchedImages
-											.contains(allImages.get(i))) {
+												&& tagMap.get(key).contains(secondTagValue.getText()))) {
+									if (!searchedImages.contains(allImages.get(i))) {
 										searchedImages.add(allImages.get(i));
 									}
 								}
@@ -351,35 +350,25 @@ public class searchController {
 					}
 				} else if (conjunctiveSearch) {
 
-					if (firstTagName.getText() != null
-							&& firstTagValue.getText() != null) {
+					if (firstTagName.getText() != null && firstTagValue.getText() != null) {
 						searchedImages.clear();
 						for (int i = 0; i < allImages.size(); i++) {
 							boolean foundFirst = false;
 							boolean foundsecond = false;
-							HashMap<String, List<String>> tagMap = allImages
-									.get(i).getTag();
+							HashMap<String, List<String>> tagMap = allImages.get(i).getTag();
 							if (tagMap.containsKey(firstTagName.getText())
-									&& tagMap.containsKey(
-											secondTagName.getText())) {
+									&& tagMap.containsKey(secondTagName.getText())) {
 								for (int j = 0; j < tagMap.size(); j++) {
-									String key = (String) tagMap.keySet()
-											.toArray()[j];
+									String key = (String) tagMap.keySet().toArray()[j];
 									if ((key.equals(firstTagName.getText())
-											&& tagMap.get(key).contains(
-													firstTagValue.getText()))) {
+											&& tagMap.get(key).contains(firstTagValue.getText()))) {
 										foundFirst = true;
 									}
-									if (foundFirst && ((key
-											.equals(secondTagName.getText())
-											&& tagMap.get(key)
-													.contains(secondTagValue
-															.getText())))) {
+									if (foundFirst && ((key.equals(secondTagName.getText())
+											&& tagMap.get(key).contains(secondTagValue.getText())))) {
 										foundsecond = true;
-										if (foundsecond && !searchedImages
-												.contains(allImages.get(i))) {
-											searchedImages
-													.add(allImages.get(i));
+										if (foundsecond && !searchedImages.contains(allImages.get(i))) {
+											searchedImages.add(allImages.get(i));
 										}
 									}
 								}
@@ -388,37 +377,32 @@ public class searchController {
 					}
 				}
 			}
-			searchResults.setItems(
-					FXCollections.observableArrayList(searchedImages));
+			searchResults.setItems(FXCollections.observableArrayList(searchedImages));
 
-			searchResults.setCellFactory(
-					new Callback<ListView<Photo>, ListCell<Photo>>() {
+			searchResults.setCellFactory(new Callback<ListView<Photo>, ListCell<Photo>>() {
+				@Override
+				public ListCell<Photo> call(ListView<Photo> arg0) {
+					ListCell<Photo> cell = new ListCell<Photo>() {
 						@Override
-						public ListCell<Photo> call(ListView<Photo> arg0) {
-							ListCell<Photo> cell = new ListCell<Photo>() {
-								@Override
-								protected void updateItem(Photo photo,
-										boolean bt1) {
-									super.updateItem(photo, bt1);
-									if (photo != null) {
-										Image img = searchedImages
-												.get(getIndex()).getImage();
-										ImageView imgview = new ImageView(img);
-										imgview.setFitWidth(50);
-										imgview.setFitHeight(50);
-										setGraphic(imgview);
-										setText(searchedImages.get(getIndex())
-												.getName());
-									} else {
-										setGraphic(null);
-										setText("");
-									}
-								}
-							};
-							return cell;
-						};
+						protected void updateItem(Photo photo, boolean bt1) {
+							super.updateItem(photo, bt1);
+							if (photo != null) {
+								Image img = searchedImages.get(getIndex()).getImage();
+								ImageView imgview = new ImageView(img);
+								imgview.setFitWidth(50);
+								imgview.setFitHeight(50);
+								setGraphic(imgview);
+								setText(searchedImages.get(getIndex()).getName());
+							} else {
+								setGraphic(null);
+								setText("");
+							}
+						}
+					};
+					return cell;
+				};
 
-					});
+			});
 		}
 
 	}
