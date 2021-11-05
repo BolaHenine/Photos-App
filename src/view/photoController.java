@@ -27,6 +27,13 @@ import javafx.stage.Stage;
 import model.Photo;
 import model.User;
 
+/**
+ *
+ * photoController is the class that controls the Photo View. It creates the
+ * functionality for the buttons and Text Fields for the Photo View to function
+ * properly.
+ */
+
 public class photoController {
 	@FXML
 	Button logout;
@@ -75,6 +82,17 @@ public class photoController {
 	private HashMap<String, List<String>> tags;
 
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+	/**
+	 * Method that displays the text in the non user-inputed Text Fields and the
+	 * image in the Image View set to a certain height and width. The code for tags
+	 * to be displayed in the List View, tagList, are also created.
+	 * <p>
+	 *
+	 * @param userNumber  Integer value that denotes what user is logged in
+	 * @param albumNumber Integer value that denotes what album is selected
+	 * @param photoNumber Integer value that denotes what photo is opened
+	 */
 
 	public void start(int userNumber, int albumNumber, int photoNumber) throws ClassNotFoundException, IOException {
 
