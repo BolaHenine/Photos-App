@@ -58,4 +58,51 @@ public class SerializableImage implements Serializable {
 		return image;
 	}
 
+	/**
+	 *
+	 * @return the width if the image
+	 */
+
+	public int getImageWidth() {
+		return width;
+	}
+
+	/**
+	 *
+	 * @return the height of the image
+	 */
+
+	public int getImageHeight() {
+		return height;
+	}
+
+	/**
+	 *
+	 * @return the pixels of the image
+	 */
+
+	public int[][] getImagePixels() {
+		return pixels;
+	}
+
+	/**
+	 *
+	 * @param image
+	 *            the image that will be compared
+	 * @return true if the two images are the same and false if they are not
+	 */
+
+	public boolean isEqual(SerializableImage image) {
+		if (width != image.getImageWidth() || height != image.getImageHeight())
+			return false;
+
+		for (int currentRow = 0; currentRow < width; currentRow++)
+			for (int currentColumn = 0; currentColumn < height; currentColumn++)
+				if (pixels[currentRow][currentColumn] != image
+						.getImagePixels()[currentRow][currentColumn])
+					return false;
+
+		return true;
+	}
+
 }

@@ -116,10 +116,26 @@ public class adminController {
 				dialog.setHeaderText("Please enter a valid Username");
 				dialog.show();
 			} else {
-				User newUser = new User(username.getText());
-				users.add(newUser);
-				username.setText("");
-				User.writeApp(users);
+				boolean exist = false;
+
+				for (int i = 0; i < users.size(); i++) {
+					if (users.get(i).getName().toLowerCase()
+							.equals(username.getText().trim().toLowerCase())) {
+						exist = true;
+					}
+				}
+
+				if (exist) {
+					dialog.setTitle("Already Exist");
+					dialog.setHeaderText("Please enter a different Username");
+					dialog.show();
+				} else {
+					User newUser = new User(username.getText());
+					users.add(newUser);
+					username.setText("");
+					User.writeApp(users);
+				}
+
 			}
 
 		}

@@ -37,6 +37,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.Album;
 import model.Photo;
+import model.SerializableImage;
 import model.User;
 
 public class albumController {
@@ -269,13 +270,57 @@ public class albumController {
 					new ExtensionFilter("PNG Files", "*.png", "*.PNG"));
 			File selectedFile = chooser.showOpenDialog(stage);
 			if (selectedFile != null) {
+
+				boolean exist = false;
+
 				Image image = new Image(selectedFile.toURI().toString());
 				Photo newPhoto = new Photo(selectedFile.getName(), image,
 						calendar, captionName.getText());
-				selectedAlbum.addPhoto(newPhoto);
-				User.writeApp(users);
-				imageList.setItems(FXCollections
-						.observableArrayList(selectedAlbum.getPhotos()));
+
+				SerializableImage img = new SerializableImage(image);
+
+				for (int i = 0; i < images.size(); i++) {
+					if (images.get(i).getSerImage().isEqual(img)) {
+						exist = true;
+					}
+				}
+				if (exist) {
+					dialog.setTitle("Photo already exists");
+					dialog.setHeaderText("Please Select a different photo");
+					dialog.show();
+				} else {
+					int existAlbumIndex = 0;
+					int existPhotoIndex = 0;
+					boolean existDiffAlbum = false;
+
+					for (int i = 0; i < allAlbums.size(); i++) {
+						for (int j = 0; j < allAlbums.get(i).getPhotos()
+								.size(); j++) {
+							if (allAlbums.get(i).getPhotos().get(j)
+									.getSerImage().isEqual(img)) {
+								existAlbumIndex = i;
+								existPhotoIndex = j;
+								existDiffAlbum = true;
+							}
+						}
+					}
+
+					if (existDiffAlbum) {
+						Photo temp = allAlbums.get(existAlbumIndex).getPhotos()
+								.get(existPhotoIndex);
+						selectedAlbum.addPhoto(temp);
+						User.writeApp(users);
+						imageList.setItems(FXCollections.observableArrayList(
+								selectedAlbum.getPhotos()));
+					} else {
+						selectedAlbum.addPhoto(newPhoto);
+						User.writeApp(users);
+						imageList.setItems(FXCollections.observableArrayList(
+								selectedAlbum.getPhotos()));
+					}
+
+				}
+
 			}
 
 		}

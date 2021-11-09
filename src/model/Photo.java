@@ -68,11 +68,20 @@ public class Photo implements java.io.Serializable {
 
 	/**
 	 *
-	 * @return photo.getImage(); the image
+	 * @return photo.getImage() the image
 	 */
 
 	public Image getImage() {
 		return photo.getImage();
+	}
+
+	/**
+	 *
+	 * @return photo the image
+	 */
+
+	public SerializableImage getSerImage() {
+		return photo;
 	}
 
 	/**
