@@ -1,3 +1,8 @@
+/**
+ * @author Bola Henine
+ *
+ * @author Roshan Seth
+ */
 package model;
 
 import java.io.Serializable;
@@ -7,11 +12,23 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
+/**
+ *
+ * creates a the serialization of the image pixel by pixel
+ *
+ */
+
 public class SerializableImage implements Serializable {
 
 	private static final long serialVersionUID = -1266447099158556616L;
 	private int width, height;
 	private int[][] pixels;
+
+	/**
+	 *
+	 * @param image
+	 *            the image that will be serialized
+	 */
 
 	public SerializableImage(Image image) {
 		width = (int) image.getWidth();
@@ -25,6 +42,11 @@ public class SerializableImage implements Serializable {
 						.getArgb(currentWidth, currentHeight);
 	}
 
+	/**
+	 *
+	 * @return the image that was serialized
+	 */
+
 	public Image getImage() {
 		WritableImage image = new WritableImage(width, height);
 
@@ -34,31 +56,6 @@ public class SerializableImage implements Serializable {
 				w.setArgb(i, j, pixels[i][j]);
 
 		return image;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public int[][] getPixels() {
-		return pixels;
-	}
-
-	public boolean equals(SerializableImage image) {
-		if (width != image.getWidth() || height != image.getHeight())
-			return false;
-
-		for (int currentRow = 0; currentRow < width; currentRow++)
-			for (int currentColumn = 0; currentColumn < height; currentColumn++)
-				if (pixels[currentRow][currentColumn] != image
-						.getPixels()[currentRow][currentColumn])
-					return false;
-
-		return true;
 	}
 
 }

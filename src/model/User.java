@@ -1,3 +1,8 @@
+/**
+ * @author Bola Henine
+ *
+ * @author Roshan Seth
+ */
 package model;
 
 import java.io.File;
@@ -12,6 +17,12 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ *
+ * the user class
+ *
+ */
+
 public class User implements java.io.Serializable {
 	private String userName;
 	private ArrayList<Album> albums;
@@ -24,21 +35,54 @@ public class User implements java.io.Serializable {
 
 	public static ObjectOutputStream oos;
 
+	/**
+	 *
+	 * @return the username
+	 */
+
 	public String getName() {
 		return userName;
 	}
+
+	/**
+	 *
+	 * @param username
+	 *            the username that was entered by the user. The constructor
+	 *            that sets the username
+	 */
+
 	public User(String username) {
 		userName = username;
 		albums = new ArrayList<Album>();
 	}
 
+	/**
+	 *
+	 * @param newAlbum
+	 *            the name of the new album that will be added
+	 */
+
 	public void addAlbum(Album newAlbum) {
 		albums.add(newAlbum);
 	}
 
+	/**
+	 *
+	 * @return list of the albums
+	 */
+
 	public ArrayList<Album> getAlbums() {
 		return albums;
 	}
+
+	/**
+	 * Serializes the data
+	 *
+	 * @param users
+	 *            the list of users
+	 * @throws IOException
+	 *             throws exception if the serialization fails.
+	 */
 
 	public static void writeApp(ObservableList<User> users) throws IOException {
 		oos = new ObjectOutputStream(
@@ -46,6 +90,15 @@ public class User implements java.io.Serializable {
 		oos.writeObject(new ArrayList<User>(users));
 		oos.close();
 	}
+
+	/**
+	 *
+	 * @return the deserialization of the data
+	 * @throws IOException
+	 *             throws exception if the deserialization fails.
+	 * @throws ClassNotFoundException
+	 *             throws exception if the class or file name was not found.
+	 */
 
 	public static ObservableList<User> readApp()
 			throws IOException, ClassNotFoundException {

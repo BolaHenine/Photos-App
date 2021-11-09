@@ -1,3 +1,8 @@
+/**
+ * @author Bola Henine
+ *
+ * @author Roshan Seth
+ */
 package view;
 
 import java.io.IOException;
@@ -81,20 +86,25 @@ public class photoController {
 
 	private HashMap<String, List<String>> tags;
 
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	private DateTimeFormatter formatter = DateTimeFormatter
+			.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	/**
-	 * Method that displays the text in the non user-inputed Text Fields and the
-	 * image in the Image View set to a certain height and width. The code for tags
-	 * to be displayed in the List View, tagList, are also created.
-	 * <p>
 	 *
-	 * @param userNumber  Integer value that denotes what user is logged in
-	 * @param albumNumber Integer value that denotes what album is selected
-	 * @param photoNumber Integer value that denotes what photo is opened
+	 * @param userNumber
+	 *            the index of the selected user
+	 * @param albumNumber
+	 *            the index of the selected album
+	 * @param photoNumber
+	 *            the index of the selected photo
+	 * @throws ClassNotFoundException
+	 *             throws an Exception if class is not found
+	 * @throws IOException
+	 *             throws an Exception if deseriliazation can't be performed
 	 */
 
-	public void start(int userNumber, int albumNumber, int photoNumber) throws ClassNotFoundException, IOException {
+	public void start(int userNumber, int albumNumber, int photoNumber)
+			throws ClassNotFoundException, IOException {
 
 		userIndex = userNumber;
 		photoIndex = photoNumber;
@@ -104,7 +114,8 @@ public class photoController {
 		captionName.setEditable(false);
 		dateCreated.setEditable(false);
 
-		photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().get(photoIndex);
+		photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos()
+				.get(photoIndex);
 		photoName.setText(photo.getName());
 		photoView.setFitHeight(199);
 		photoView.setFitWidth(357);
@@ -118,24 +129,29 @@ public class photoController {
 
 		tags = photo.getTag();
 		if (tags != null) {
-			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
+			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections
+					.observableMap(tags);
 
 			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 
 			tagList.setCellFactory(lv -> new ListCell<String>() {
 
 				/**
-				 * Method that fetches the tag key,value pair in the hash map and adds the value
-				 * to a list of strings and the key to a String called key. How the key,value
-				 * pair will be displayed in the List View, tagList, as a String is also
-				 * created. Method will also update the key,value pair if it is changed in any
-				 * way.
+				 * Method that fetches the tag key,value pair in the hash map
+				 * and adds the value to a list of strings and the key to a
+				 * String called key. How the key,value pair will be displayed
+				 * in the List View, tagList, as a String is also created.
+				 * Method will also update the key,value pair if it is changed
+				 * in any way.
 				 * <p>
 				 *
-				 * @param item  String value that denotes the string of a tag,value pair in
-				 *              tagList
-				 * @param empty Boolean value that returns <code>true</code> if tagList is empty
-				 *              or <code>false</code> if tagList is not empty
+				 * @param item
+				 *            String value that denotes the string of a
+				 *            tag,value pair in tagList
+				 * @param empty
+				 *            Boolean value that returns <code>true</code> if
+				 *            tagList is empty or <code>false</code> if tagList
+				 *            is not empty
 				 */
 
 				@Override
@@ -145,9 +161,11 @@ public class photoController {
 						setText(null);
 					} else {
 						List<String> valueForFirstKey;
-						String key = (String) tags.keySet().toArray()[getIndex()];
+						String key = (String) tags.keySet()
+								.toArray()[getIndex()];
 						valueForFirstKey = tags.get(key);
-						String name = "\"" + key + "\"" + " = " + "\"" + valueForFirstKey + "\"" + " ";
+						String name = "\"" + key + "\"" + " = " + "\""
+								+ valueForFirstKey + "\"" + " ";
 						setText(name);
 					}
 				}
@@ -157,15 +175,17 @@ public class photoController {
 	}
 
 	/**
-	 * Method that contains the functionality for the buttons used in this scene.
-	 * Functionality for the logout,back,left,right,delete tag,x,and add tag button.
-	 * <p>
 	 *
-	 * @param e Event Listener that indicates that a component-defined action
-	 *          occurred.
-	 * 
+	 * @param e
+	 *            Event Listener that indicates that a component-defined action
+	 *            occurred.
+	 * @throws IOException
+	 *             throws an Exception if deseriliazation can't be performed
+	 * @throws ClassNotFoundException
+	 *             throws an Exception if class is not found
 	 */
-	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
+	public void buttonClick(ActionEvent e)
+			throws IOException, ClassNotFoundException {
 		loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
@@ -173,9 +193,11 @@ public class photoController {
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		String item = tagList.getSelectionModel().getSelectedItem();
 		Button b = (Button) e.getSource();
-		int lastPhotoIndex = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().toArray().length;
+		int lastPhotoIndex = users.get(userIndex).getAlbums().get(albumIndex)
+				.getPhotos().toArray().length;
 
-		albumLoader = new FXMLLoader(getClass().getResource("/view/albumView.fxml"));
+		albumLoader = new FXMLLoader(
+				getClass().getResource("/view/albumView.fxml"));
 		albumParent = (Parent) albumLoader.load();
 		Scene albumScene = new Scene(albumParent);
 		albumScene.getRoot().setStyle("-fx-font-family: 'serif'");
@@ -192,14 +214,16 @@ public class photoController {
 			if (photoIndex > 0) {
 				photoIndex = photoIndex - 1;
 			}
-			photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().get(photoIndex);
+			photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos()
+					.get(photoIndex);
 			photoName.setText(photo.getName());
 			photoView.setImage(photo.getImage());
 			photoName1.setText(photo.getName());
 			captionName.setText(photo.getCaption());
 			dateCreated.setText(formatter.format(photo.getDate()));
 			tags = photo.getTag();
-			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
+			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections
+					.observableMap(tags);
 			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 
 		}
@@ -207,14 +231,16 @@ public class photoController {
 			if (photoIndex < lastPhotoIndex - 1) {
 				photoIndex = photoIndex + 1;
 			}
-			photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos().get(photoIndex);
+			photo = users.get(userIndex).getAlbums().get(albumIndex).getPhotos()
+					.get(photoIndex);
 			photoName.setText(photo.getName());
 			photoView.setImage(photo.getImage());
 			photoName1.setText(photo.getName());
 			captionName.setText(photo.getCaption());
 			dateCreated.setText(formatter.format(photo.getDate()));
 			tags = photo.getTag();
-			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
+			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections
+					.observableMap(tags);
 			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 
 		}
@@ -223,7 +249,8 @@ public class photoController {
 
 			photo.deleteTag(item);
 			tags.remove(item);
-			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
+			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections
+					.observableMap(tags);
 			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 			User.writeApp(users);
 
@@ -236,7 +263,8 @@ public class photoController {
 				Dialog<ButtonType> dialog = new Dialog<>();
 				dialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
 				dialog.setTitle("Error");
-				dialog.setHeaderText("Tag Name and Tag Value are empty. Please enter a valid Tag Name and Tag Value.");
+				dialog.setHeaderText(
+						"Tag Name and Tag Value are empty. Please enter a valid Tag Name and Tag Value.");
 				DialogPane dialogPane = dialog.getDialogPane();
 				dialogPane.getButtonTypes().addAll(ButtonType.OK);
 				dialog.show();
@@ -244,8 +272,10 @@ public class photoController {
 				tagValue.clear();
 			} else {
 				photo.addTag(tagName.getText(), tagValue.getText());
-				ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
-				tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
+				ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections
+						.observableMap(tags);
+				tagList.getItems()
+						.setAll(observableExtensionToMimeMap.keySet());
 				User.writeApp(users);
 				tagName.clear();
 				tagValue.clear();

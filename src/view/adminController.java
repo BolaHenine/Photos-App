@@ -1,3 +1,8 @@
+/**
+ * @author Bola Henine
+ *
+ * @author Roshan Seth
+ */
 package view;
 
 import java.io.IOException;
@@ -39,6 +44,14 @@ public class adminController {
 
 	private ObservableList<User> users;
 
+	/**
+	 *
+	 * @throws ClassNotFoundException
+	 *             throws exception if the class or file name was not found.
+	 * @throws IOException
+	 *             throws exception if the deserialization fails.
+	 */
+
 	public void start() throws ClassNotFoundException, IOException {
 
 		users = User.readApp();
@@ -59,9 +72,21 @@ public class adminController {
 
 	}
 
-	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
+	/**
+	 *
+	 * @param e
+	 *            the action event that triggered the method
+	 * @throws IOException
+	 *             throws exception if the deserialization fails.
+	 * @throws ClassNotFoundException
+	 *             throws exception if the class or file name was not found.
+	 */
 
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
+	public void buttonClick(ActionEvent e)
+			throws IOException, ClassNotFoundException {
+
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -90,13 +115,12 @@ public class adminController {
 				dialog.setTitle("Empty Username");
 				dialog.setHeaderText("Please enter a valid Username");
 				dialog.show();
+			} else {
+				User newUser = new User(username.getText());
+				users.add(newUser);
+				username.setText("");
+				User.writeApp(users);
 			}
-			User newUser = new User(username.getText());
-
-			users.add(newUser);
-			username.setText("");
-
-			User.writeApp(users);
 
 		}
 		if (b == delete) {

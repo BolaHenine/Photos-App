@@ -1,10 +1,24 @@
+/**
+ * @author Bola Henine
+ *
+ * @author Roshan Seth
+ */
 package app;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * The main driver of the application
+ */
+
 public class mainDriver extends Application {
+
+	/**
+	 * @param primaryStage
+	 *            The main stage of the program
+	 */
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {

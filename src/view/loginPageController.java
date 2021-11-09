@@ -1,3 +1,8 @@
+/**
+ * @author Bola Henine
+ *
+ * @author Roshan Seth
+ */
 package view;
 
 import java.io.IOException;
@@ -37,11 +42,27 @@ public class loginPageController {
 
 	private int loggedUserIndex;
 
+	/**
+	 *
+	 * @param ke
+	 *            the key that was pressed if the key was enter then log in
+	 */
+
 	public void enterClicked(KeyEvent ke) {
 		if (ke.getCode().equals(KeyCode.ENTER)) {
 			login.fire();
 		}
 	}
+
+	/**
+	 *
+	 * @param e
+	 *            the action event that triggered the method
+	 * @throws IOException
+	 *             throws exception if the deserialization fails.
+	 * @throws ClassNotFoundException
+	 *             throws exception if the class or file name was not found.
+	 */
 
 	public void buttonClick(ActionEvent e)
 			throws IOException, ClassNotFoundException {

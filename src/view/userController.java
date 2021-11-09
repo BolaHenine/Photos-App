@@ -1,3 +1,8 @@
+/**
+ * @author Bola Henine
+ *
+ * @author Roshan Seth
+ */
 package view;
 
 import java.io.IOException;
@@ -59,13 +64,27 @@ public class userController {
 
 	private ObservableList<User> usersList;
 
-	public void start(int loggedUserIndex, String userName) throws ClassNotFoundException, IOException {
+	/**
+	 *
+	 * @param loggedUserIndex
+	 *            the index of the logged in user
+	 * @param userName
+	 *            the name of the user
+	 * @throws ClassNotFoundException
+	 *             throws exception if the class or file name was not found.
+	 * @throws IOException
+	 *             throws exception if the deserialization fails.
+	 */
+
+	public void start(int loggedUserIndex, String userName)
+			throws ClassNotFoundException, IOException {
 
 		selectedUserIndex = loggedUserIndex;
 
 		usersList = User.readApp();
 
-		albums = FXCollections.observableList(usersList.get(loggedUserIndex).getAlbums());
+		albums = FXCollections
+				.observableList(usersList.get(loggedUserIndex).getAlbums());
 
 		albumList.setItems(albums);
 
@@ -82,10 +101,15 @@ public class userController {
 			}
 		});
 
-		albumList.getSelectionModel().selectedIndexProperty().addListener((obs) -> showItemInputDialog());
+		albumList.getSelectionModel().selectedIndexProperty()
+				.addListener((obs) -> showItemInputDialog());
 
 		userNameLabel.setText(userName);
 	}
+
+	/**
+	 * fills the text areas when a user is selected
+	 */
 
 	private void showItemInputDialog() {
 		Album selectedAlbum = albumList.getSelectionModel().getSelectedItem();
@@ -100,7 +124,18 @@ public class userController {
 
 	}
 
-	public void listClick(MouseEvent click) throws ClassNotFoundException, IOException {
+	/**
+	 *
+	 * @param click
+	 *            mouse click event
+	 * @throws ClassNotFoundException
+	 *             throws exception if the class or file name was not found.
+	 * @throws IOException
+	 *             throws exception if the deserialization fails.
+	 */
+
+	public void listClick(MouseEvent click)
+			throws ClassNotFoundException, IOException {
 		int index = albumList.getSelectionModel().getSelectedIndex();
 		if (click.getClickCount() == 2) {
 			if (index != -1) {
@@ -109,20 +144,34 @@ public class userController {
 		}
 	}
 
-	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
+	/**
+	 *
+	 * @param e
+	 *            the action event that triggered the method
+	 * @throws IOException
+	 *             throws exception if the deserialization fails.
+	 * @throws ClassNotFoundException
+	 *             throws exception if the class or file name was not found.
+	 */
 
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
+	public void buttonClick(ActionEvent e)
+			throws IOException, ClassNotFoundException {
+
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
 		root.getRoot().setStyle("-fx-font-family: 'serif'");
 		Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-		albumLoader = new FXMLLoader(getClass().getResource("/view/albumView.fxml"));
+		albumLoader = new FXMLLoader(
+				getClass().getResource("/view/albumView.fxml"));
 		albumParent = (Parent) albumLoader.load();
 		Scene albumScene = new Scene(albumParent);
 		albumScene.getRoot().setStyle("-fx-font-family: 'serif'");
 		albumController albumController = albumLoader.getController();
 
-		searchLoader = new FXMLLoader(getClass().getResource("/view/searchView.fxml"));
+		searchLoader = new FXMLLoader(
+				getClass().getResource("/view/searchView.fxml"));
 		searchParent = (Parent) searchLoader.load();
 		searchController searchController = searchLoader.getController();
 		Scene searchScene = new Scene(searchParent);
@@ -149,9 +198,10 @@ public class userController {
 				errorDialog.show();
 			} else {
 
-				for (int i = 0; i < usersList.get(selectedUserIndex).getAlbums().size(); i++) {
-					if (usersList.get(selectedUserIndex).getAlbums().get(i).getName()
-							.equals(albumName.getText().trim())) {
+				for (int i = 0; i < usersList.get(selectedUserIndex).getAlbums()
+						.size(); i++) {
+					if (usersList.get(selectedUserIndex).getAlbums().get(i)
+							.getName().equals(albumName.getText().trim())) {
 						alreadyExist = true;
 					}
 				}
@@ -165,7 +215,8 @@ public class userController {
 					usersList.get(selectedUserIndex).addAlbum(newAlbum);
 					albumName.setText("");
 					User.writeApp(usersList);
-					albums = FXCollections.observableList(usersList.get(selectedUserIndex).getAlbums());
+					albums = FXCollections.observableList(
+							usersList.get(selectedUserIndex).getAlbums());
 					albumList.setItems(albums);
 				}
 
@@ -210,9 +261,10 @@ public class userController {
 				errorDialog.show();
 			} else {
 
-				for (int i = 0; i < usersList.get(selectedUserIndex).getAlbums().size(); i++) {
-					if (usersList.get(selectedUserIndex).getAlbums().get(i).getName()
-							.equals(albumName.getText().trim())) {
+				for (int i = 0; i < usersList.get(selectedUserIndex).getAlbums()
+						.size(); i++) {
+					if (usersList.get(selectedUserIndex).getAlbums().get(i)
+							.getName().equals(albumName.getText().trim())) {
 						alreadyExist = true;
 					}
 				}
@@ -222,8 +274,10 @@ public class userController {
 					errorDialog.setHeaderText("Please enter a different name");
 					errorDialog.show();
 				} else {
-					usersList.get(selectedUserIndex).getAlbums().get(index).setName(albumName.getText());
-					albums = FXCollections.observableList(usersList.get(selectedUserIndex).getAlbums());
+					usersList.get(selectedUserIndex).getAlbums().get(index)
+							.setName(albumName.getText());
+					albums = FXCollections.observableList(
+							usersList.get(selectedUserIndex).getAlbums());
 					albumList.setItems(albums);
 					albumName.setText("");
 					User.writeApp(usersList);
