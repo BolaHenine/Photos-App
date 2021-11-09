@@ -123,6 +123,21 @@ public class photoController {
 			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 
 			tagList.setCellFactory(lv -> new ListCell<String>() {
+
+				/**
+				 * Method that fetches the tag key,value pair in the hash map and adds the value
+				 * to a list of strings and the key to a String called key. How the key,value
+				 * pair will be displayed in the List View, tagList, as a String is also
+				 * created. Method will also update the key,value pair if it is changed in any
+				 * way.
+				 * <p>
+				 *
+				 * @param item  String value that denotes the string of a tag,value pair in
+				 *              tagList
+				 * @param empty Boolean value that returns <code>true</code> if tagList is empty
+				 *              or <code>false</code> if tagList is not empty
+				 */
+
 				@Override
 				public void updateItem(String item, boolean empty) {
 					super.updateItem(item, empty);
@@ -141,6 +156,15 @@ public class photoController {
 
 	}
 
+	/**
+	 * Method that contains the functionality for the buttons used in this scene.
+	 * Functionality for the logout,back,left,right,delete tag,x,and add tag button.
+	 * <p>
+	 *
+	 * @param e Event Listener that indicates that a component-defined action
+	 *          occurred.
+	 * 
+	 */
 	public void buttonClick(ActionEvent e) throws IOException, ClassNotFoundException {
 		loader = new FXMLLoader(getClass().getResource("/view/loginPage.fxml"));
 		Scene root = (Scene) loader.load();
@@ -178,10 +202,6 @@ public class photoController {
 			ObservableMap<String, List<String>> observableExtensionToMimeMap = FXCollections.observableMap(tags);
 			tagList.getItems().setAll(observableExtensionToMimeMap.keySet());
 
-		}
-		if (b == back) {
-			albumcontroller.start(userIndex, albumIndex);
-			stage.setScene(albumScene);
 		}
 		if (b == right) {
 			if (photoIndex < lastPhotoIndex - 1) {
