@@ -58,8 +58,6 @@ public class albumController {
 	@FXML
 	Button recaption;
 	@FXML
-	Button caption;
-	@FXML
 	Button move;
 	@FXML
 	Button copy;
