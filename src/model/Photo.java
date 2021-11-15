@@ -28,20 +28,15 @@ public class Photo implements java.io.Serializable {
 	public static final String storeFile = "datas.dat";
 
 	/**
-	 * @param photoName
-	 *            the name of the photo
-	 * @param image
-	 *            the image itself
-	 * @param createdDate
-	 *            the date that the photo was created on
-	 * @param captionName
-	 *            the captions of the photo
+	 * @param photoName   the name of the photo
+	 * @param image       the image itself
+	 * @param createdDate the date that the photo was created on
+	 * @param captionName the captions of the photo
 	 *
-	 *            The photo constructor
+	 *                    The photo constructor
 	 */
 
-	public Photo(String photoName, Image image, LocalDateTime createdDate,
-			String captionName) {
+	public Photo(String photoName, Image image, LocalDateTime createdDate, String captionName) {
 		name = photoName;
 		photo = new SerializableImage(image);
 		date = createdDate;
@@ -107,10 +102,8 @@ public class Photo implements java.io.Serializable {
 
 	/**
 	 *
-	 * @param tagName
-	 *            the name of the tag
-	 * @param tagValue
-	 *            the value of the tag
+	 * @param tagName  the name of the tag
+	 * @param tagValue the value of the tag
 	 */
 
 	public void addTag(String tagName, String tagValue) {
@@ -119,8 +112,7 @@ public class Photo implements java.io.Serializable {
 
 	/**
 	 *
-	 * @param tagName
-	 *            removes the tag
+	 * @param tagName removes the tag
 	 */
 
 	public void deleteTag(String tagName) {
@@ -129,22 +121,31 @@ public class Photo implements java.io.Serializable {
 
 	/**
 	 *
-	 * @param name
-	 *            sets the name of the photo
-	 * @param modifiedDate
-	 *            changes the date of the photo
+	 * @param captionName  deletes the caption name of the photo
+	 * @param modifiedDate changes the date of the photo
+	 */
+
+	public void deleteCaption(String captionName, LocalDateTime modifiedDate) {
+		captionName = "";
+		caption = captionName;
+		date = modifiedDate;
+	}
+
+	/**
+	 *
+	 * @param name         sets the name of the photo
+	 * @param modifiedDate changes the date of the photo
 	 */
 
 	public void setName(String name, LocalDateTime modifiedDate) {
 		this.name = name;
 		date = modifiedDate;
 	}
+
 	/**
 	 *
-	 * @param captionName
-	 *            changes the caption name of the photo
-	 * @param modifiedDate
-	 *            changes the date of the photo
+	 * @param captionName  changes the caption name of the photo
+	 * @param modifiedDate changes the date of the photo
 	 */
 
 	public void recaption(String captionName, LocalDateTime modifiedDate) {

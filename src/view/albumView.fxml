@@ -31,6 +31,7 @@
       <TextField fx:id = "photoName" layoutX="139.0" layoutY="342.0" promptText="Photo Name:" />
       <TextField fx:id = "captionName" layoutX="419.0" layoutY="342.0" promptText="Caption:" />
       <Button fx:id="recaption" layoutX="331.0" layoutY="342.0" mnemonicParsing="false" text="Recaption" onAction="#buttonClick" />
+      <Button fx:id="deleteCaption" layoutX="320.0" layoutY="382.0" mnemonicParsing="false" text="Delete Caption" onAction="#buttonClick" />
       <Button fx:id="move" layoutX="239.0" layoutY="379.0" mnemonicParsing="false" text="Move" onAction="#buttonClick" />
       <Button fx:id="copy" layoutX="145.0" layoutY="379.0" mnemonicParsing="false" text="Copy" onAction="#buttonClick" />
    </children>
