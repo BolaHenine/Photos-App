@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  * The main driver of the application
  */
 
-public class mainDriver extends Application {
+public class Photos extends Application {
 
 	/**
 	 * @param primaryStage
